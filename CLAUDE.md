@@ -89,10 +89,18 @@ Every video goes through these skills, one at a time. Don't skip ahead. Each ste
   - short: `kit3d/mood.tsx` `MoodScript`
   - long: `kit/film.tsx` plan moods
 - **Backgrounds are fully built, meaningful and reusable:** rooms with real objects, never a floating void.
+- **Nothing in a set stands still (user, 2026-11-24).** Every background has small, slow ambient motion:
+  - hanging and pinned things sway from their pin; plants breathe leaf by leaf
+  - string lights sag and twinkle; clocks tick; lamps breathe; fluorescent lights flicker now and then
+  - window skies drift (clouds and birds by day, stars and moon by night); city windows switch on and off; dust floats
+  - Flat: built into every backdrop and lamp (`kit/life.tsx`, `<Sway>`, `<Motes>`); scale it per shot with `<Scene life={..}>`. 3D: `SetView` sways objects by name (`leaf`, `flower`, `curtain`, `drawing`, `banner`, `pendant_*`).
+  - The rock-bottom hold keeps it low (`life` 0.3), not off. New set objects get a motion too.
+  - Check: `bin/render.sh LifeTest _lookdev draft` (flat) and `LifeTest3D` (3D).
 - **Smooth cuts:**
   - Cuts land about 4 frames before the word.
   - Camera moves start already in motion.
   - Use whip pans for montages and 6–8 frame dissolves for time jumps.
+  - Long videos (from the second one on) move the camera with `studio/src/kit/camera.ts` (`camMove`, `withWhip`, `<Depth>`). Calm moves only, and one locked `hold` at rock bottom.
 - **No blown-out heads:** check that clipped (>245) pixels stay under 2% per frame.
 - **Review loop:**
   1. Render a half-resolution draft.

@@ -36,6 +36,7 @@ Ask **"Build these?"** before starting. Build them the reusable way:
   - `TOON_<pattern>_*`, `GLOW_*`, `INK`, `MARK_*`, `LIGHT_*`
   - and the helpers `box`, `cylinder`, `arc_block`, `props`, `bake_ao`
 
+  Name objects that should move with the ambient-life prefixes so they sway on their own: `leaf`, `flower`, `curtain`, `drawing`, `banner`, `pendant_cord` / `pendant_shade` / `pendant_bulb` (rules in `kit3d/Set.tsx`). Add a rule there for a new kind of moving object.
   Run Blender headless, add the set to `ALL_ASSETS` in `kit3d/assets.ts`, and give it a lit environment in `kit3d/envs.tsx`.
 - **Flat place:** add a component to `kit/backdrops.tsx`, a full room that takes `m` (the mood colours), and a new `Loc` in `kit/film.tsx`.
 - **Character:** add an entry to `CAST` in `person.py` (3D) or to `CAST` in `kit/characters.tsx` (flat).

@@ -28,6 +28,7 @@ Keep `timing.ts`. Rewrite `Shots.tsx`, the cut list in `Short.tsx` and the `mood
 5. **Show drawings in full:** at least one POV or top-down insert where the drawing reaches `p = 1`.
 6. **Colour script:** `moodScript()` keyframes on words. Use `bright`, `cozy`, `cool`, `night`, `grey`, `anxious`, `bottom` or `dawn` (`kit3d/mood.tsx`). Positive by default; blends take about 1.2 s. `Stage` grades automatically. Use `Bedroom time="day"` for daytime.
 7. **Fully built places:** desk shots through the ghost wall (`ghost={B.deskCutaway}`), vignette rooms with `Island`, the stadium with `Arena`-style crowd. Never a floating void behind a character.
+7a. **The set is alive:** `SetView` sways set objects by name prefix (`leaf`, `flower`, `curtain`, `drawing`, `banner`, `pendant_*`) and every env has `<Dust>`. Lower it with `<SetView life={0.3}>` for a still beat; never leave a set fully frozen.
 7b. **Faces carry the emotion:** pick from the 34 presets in `kit3d/face.ts` (or set the parts). Change the face on the beat every 0.3–0.6 s, use side-glances and asymmetry, and set `talk` when a character speaks.
 8. **Captions** come from `captionWords()`: one content word per chunk, with the `*key*` words in amber.
 9. **Audio:** copy the cue section of `studio/audio/make_short_audio.py` for the new story. Anchor every sound effect to `W(line, word)`, and keep the one silence at the reversal.

@@ -3,6 +3,9 @@ import {Audio, Composition, Series, staticFile} from 'remotion';
 import {FPS, H, W} from './theme';
 import {LookTest, LOOKTEST_FRAMES} from './looks/LookTest';
 import {CharTest} from './looks/CharTest';
+import {CamTest, CAMTEST_FRAMES} from './looks/CamTest';
+import {LifeTest, LIFETEST_FRAMES} from './looks/LifeTest';
+import {LifeTest3D, LIFETEST3D_FRAMES} from './looks/LifeTest3D';
 import {DesignBoard} from './looks/DesignBoard';
 import {FaceSheet} from './looks/FaceSheet';
 import {Checks96Test, TEST_FRAMES} from './shorts/checks96/Test';
@@ -194,6 +197,9 @@ export const Root: React.FC = () => (
     <Composition id="Act3" component={Act3} durationInFrames={total(ACT3)} fps={FPS} width={W} height={H} />
     <Composition id="FaceSheet" component={FaceSheet} durationInFrames={1} fps={FPS} width={1920} height={1080} />
     <Composition id="DesignBoard" component={DesignBoard} durationInFrames={1} fps={FPS} width={1920} height={1080} defaultProps={{option: 'A' as const}} />
+    <Composition id="LifeTest" component={LifeTest} durationInFrames={LIFETEST_FRAMES} fps={FPS} width={W} height={H} />
+    <Composition id="LifeTest3D" component={LifeTest3D} durationInFrames={LIFETEST3D_FRAMES} fps={FPS} width={W} height={H} />
+    <Composition id="CamTest" component={CamTest} durationInFrames={CAMTEST_FRAMES} fps={FPS} width={W} height={H} />
     <Composition id="CharTest" component={CharTest} durationInFrames={30} fps={FPS} width={W} height={H} />
     <Composition id="LookTest-9x16" component={LookTest} durationInFrames={LOOKTEST_FRAMES} fps={FPS} width={1080} height={1920} />
     <Composition id="Checks96" component={Checks96} durationInFrames={CHECKS96_FRAMES} fps={FPS} width={1080} height={1920} />

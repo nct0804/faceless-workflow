@@ -6,6 +6,7 @@ import {C, FLOOR_Y} from '../theme';
 import {ellipse, Flat, Glow, GradientPlane, LightCone, poly, Rect, roundedRect} from './three';
 import {useFilm} from './film';
 import {Backdrop, SkyWindow} from './backdrops';
+import {flicker, Sway, useLife} from './life';
 
 /** wall + floor, wide enough for push-ins and pans */
 export const Room: React.FC<{wallTop?: string; wallBottom?: string}> = ({
@@ -69,6 +70,8 @@ export const DeskLamp: React.FC<{x: number; baseY: number; on: number; coneBotto
   const shade = useMemo(() => poly([[-30, 0], [30, 0], [60, -46], [-60, -46]]), []);
   const shadeY = baseY + 190;
   const bulbY = shadeY - 46;
+  const {t, k} = useLife();
+  const fl = 1 - k + k * flicker(t, x * 0.01, 0.05);
   return (
     <group>
       <group position={[x, 0, 22]}>
@@ -81,8 +84,8 @@ export const DeskLamp: React.FC<{x: number; baseY: number; on: number; coneBotto
       </group>
       {on > 0 && (
         <>
-          <Glow x={x + 48} y={bulbY + 2} z={46} size={120} sy={0.5} color={C.lamp} intensity={on} />
-          <Glow x={x + 48} y={bulbY - 60} z={46} size={700} sy={0.8} color={C.lamp} intensity={0.16 * on} />
+          <Glow x={x + 48} y={bulbY + 2} z={46} size={120} sy={0.5} color={C.lamp} intensity={on * fl} />
+          <Glow x={x + 48} y={bulbY - 60} z={46} size={700} sy={0.8} color={C.lamp} intensity={0.16 * on * fl} />
           <LightCone
             x={x + 48}
             topY={bulbY}
@@ -107,17 +110,18 @@ export const PendantLamp: React.FC<{x: number; shadeY: number; on: number; coneB
   coneBottomY,
 }) => {
   const shade = useMemo(() => poly([[-22, 0], [22, 0], [70, -50], [-70, -50]]), []);
+  const top = shadeY + 600;
   return (
-    <group>
-      <Rect w={3} h={600} x={x} y={shadeY + 300} z={41} color="#2A3040" />
-      <Flat shape={shade} color={C.lampMetal} outline="#3A4050" outlineWidth={2} position={[x, shadeY, 41]} />
+    <Sway x={x} y={top} amp={0.012} speed={0.16} seed={x * 0.01}>
+      <Rect w={3} h={600} y={-300} z={41} color="#2A3040" />
+      <Flat shape={shade} color={C.lampMetal} outline="#3A4050" outlineWidth={2} position={[0, -600, 41]} />
       {on > 0 && (
         <>
-          <Glow x={x} y={shadeY - 52} z={46} size={130} sy={0.45} color={C.lamp} intensity={on} />
-          <LightCone x={x} topY={shadeY - 50} bottomY={coneBottomY} topW={130} bottomW={760} color={C.lamp} opacity={0.14 * on} z={45} />
+          <Glow x={0} y={-652} z={46} size={130} sy={0.45} color={C.lamp} intensity={on} />
+          <LightCone x={0} topY={-650} bottomY={coneBottomY - top} topW={130} bottomW={760} color={C.lamp} opacity={0.14 * on} z={45} />
         </>
       )}
-    </group>
+    </Sway>
   );
 };
 
@@ -334,7 +338,7 @@ export const Floodlights: React.FC<{y: number; count?: number; width?: number; o
           {on > 0 && (
             <>
               <Rect w={100} h={30} x={x} y={y} z={46} color="#F4F7FF" opacity={on} />
-              <Glow x={x} y={y} z={47} size={700} sy={0.7} color="#E8EEFF" intensity={0.35 * on} />
+              <FloodGlow x={x} y={y} i={i} on={on} />
             </>
           )}
         </group>
@@ -342,3 +346,8 @@ export const Floodlights: React.FC<{y: number; count?: number; width?: number; o
     })}
   </group>
 );
+
+const FloodGlow: React.FC<{x: number; y: number; i: number; on: number}> = ({x, y, i, on}) => {
+  const {t, k} = useLife();
+  return <Glow x={x} y={y} z={47} size={700} sy={0.7} color="#E8EEFF" intensity={0.35 * on * (1 - k + k * flicker(t, i, 0.07, i === 4))} />;
+};

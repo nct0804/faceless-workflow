@@ -319,14 +319,15 @@ export const Darkness: React.FC<{dark: number; lights: PoolLight[]; tint?: strin
 
 /* ---------- camera: zoom (push-in) and pan, driven by props each frame ---------- */
 
-export const CameraRig: React.FC<{zoom: number; x?: number; y?: number}> = ({zoom, x = 0, y = 0}) => {
+export const CameraRig: React.FC<{zoom: number; x?: number; y?: number; roll?: number}> = ({zoom, x = 0, y = 0, roll = 0}) => {
   const camera = useThree((s) => s.camera) as THREE.OrthographicCamera;
   const invalidate = useThree((s) => s.invalidate);
   useLayoutEffect(() => {
     camera.zoom = zoom;
     camera.position.set(x, y, 1000);
+    camera.rotation.set(0, 0, roll);
     camera.updateProjectionMatrix();
     invalidate();
-  }, [camera, zoom, x, y, invalidate]);
+  }, [camera, zoom, x, y, roll, invalidate]);
   return null;
 };

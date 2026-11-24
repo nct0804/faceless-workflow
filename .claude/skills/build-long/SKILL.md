@@ -31,7 +31,20 @@ description: Step 4 (long format) of the Faceless Studio pipeline. Build a 16:9 
 </AbsoluteFill>
 ```
 
-- **Push-ins every shot:** `zoom` grows over the shot (for example 1.0 → 1.06). Use a pan for reveals.
+- **Camera (from the second long film on): use the camera kit, `kit/camera.ts`.** "Nobody Is Watching" keeps its original push-ins and is not retrofitted.
+  ```tsx
+  const cam = camMove(frame, FRAMES, 'pan-right', {from: {x: -300}, to: {x: 200, zoom: 1.06}});
+  <Scene cam={withWhip(cam, frame, FRAMES, {out: 'right'})}>   {/* whip only in montages */}
+  ```
+  - Moves: `push`, `pull`, `pan-left/right`, `tilt-up/down`, `reveal` (tight → wide), `settle` (lands with a tiny overshoot), `drift` (hand-held only), `hold` (locked, for rock bottom).
+  - Every move starts already in motion and has a light hand-held drift on top (`handheld`, default 0.35). The amount per video type is in `docs/VIDEO_TYPES.md`.
+  - Chain moves inside one shot with `camPath(frame, [{at: 0, x: -200}, {at: 60, zoom: 1.1}, ...])`.
+  - Whip pans: `out: 'right'` on the last frames of shot A and `in: 'right'` on shot B. 6 frames each side, with a cheap directional blur.
+  - Parallax: wrap far or near layers in `<Depth k={...}>` (sky 0.3, foreground plant 1.4–1.6). Keep the room, the floor and the characters at 1, or feet slide.
+  - Focus pulls: `rackFocus` gives the blur for two stacked `<Scene>` layers.
+  - Keep it calm: long videos move slowly and the camera reacts to the story, for example a slow push on Mo's face at the low point or a `reveal` of the crowd. Fast cameras belong to the shorts.
+  - Preview every move: `bin/render.sh CamTest _lookdev draft`.
+- **The set is alive:** every backdrop object already has its ambient motion (`kit/life.tsx`). New props you add to a shot should get one too: wrap hanging things in `<Sway x y amp>` (pivot at the pin), use `flicker()` for lights, and `<Motes>` for dust. Use `<Scene life={0.3}>` on the rock-bottom hold. Preview with `bin/render.sh LifeTest _lookdev draft`.
 - **Faces carry the emotion:** `<Hero mood=...>` / `<Person mood=...>` accept all 34 presets of the shared face system (`kit3d/face.ts`). Change them on the beats.
 - **Captions:** Patrick Hand. Narrator lines are white, the crowd is amber lowercase, dialogue goes in pills. Each caption is held long enough to read (at least 1 s per 4 words).
 - **The meter:** `<Hud likes drawings>` tells the story in numbers.

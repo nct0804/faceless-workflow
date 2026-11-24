@@ -12,7 +12,7 @@ COMP=${1:?composition}; VID=${2:?NN-slug}; MODE=${3:-draft}
 SLUG=${VID#[0-9][0-9]-}
 DIR=out/$VID
 mkdir -p "$DIR/drafts" "$DIR/stills" "$DIR/versions"
-T=$(date +%Y%m%d-%H%M)
+T=$(date +%Y%m%d-%H%M%S)
 case "$MODE" in
   draft)
     OUT=$DIR/drafts/draft-$T.mp4
