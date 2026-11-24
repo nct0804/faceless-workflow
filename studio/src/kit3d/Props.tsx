@@ -10,7 +10,7 @@
 import React, {useMemo} from 'react';
 import * as THREE from 'three';
 import {CAPTION_FONT as FONT} from './Captions';
-import {outlineMat, toon} from './materials';
+import {toon} from './materials';
 
 type V3 = [number, number, number];
 const D = THREE.MathUtils.degToRad;
@@ -314,29 +314,23 @@ export const drawGrip = (book: V3, rot: V3 | undefined, uv: [number, number], bo
   return {tip, butt: butt.toArray() as V3, hand: hand.toArray() as V3, rest};
 };
 
-const SKIN = toon({color: '#EDE6D6', pattern: 'plain', rimStrength: 0.25, ramp: [168, 168, 255, 255]});
 const ARMINK = new THREE.MeshBasicMaterial({color: '#16181E'});
-/** a first-person arm for POV shots: ink stick from an off-screen shoulder to a round mitten (same look as the rig) */
-export const PovArm: React.FC<{shoulder: V3; hand: V3; skin?: string}> = ({shoulder, hand}) => {
+/** a first-person arm for POV shots: thin ink stick from an off-screen shoulder to a small round ink hand
+ *  (the same anatomy as the v3 rig: RicksClips stick limbs) */
+export const PovArm: React.FC<{shoulder: V3; hand: V3}> = ({shoulder, hand}) => {
   const a = new THREE.Vector3(...shoulder);
   const b = new THREE.Vector3(...hand);
   const len = a.distanceTo(b);
   const mid = a.clone().add(b).multiplyScalar(0.5);
   const q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize());
-  const hull = useMemo(() => outlineMat(3.2), []);
   return (
     <>
       <mesh material={ARMINK} position={mid.toArray() as V3} quaternion={q}>
-        <cylinderGeometry args={[0.022, 0.022, len, 10]} />
+        <cylinderGeometry args={[0.0155, 0.0155, len, 10]} />
       </mesh>
-      <group position={hand}>
-        <mesh material={SKIN} scale={[0.048, 0.05, 0.048]} castShadow>
-          <sphereGeometry args={[1, 24, 16]} />
-        </mesh>
-        <mesh material={hull} scale={[0.048, 0.05, 0.048]} userData={{noInk: true}}>
-          <sphereGeometry args={[1, 24, 16]} />
-        </mesh>
-      </group>
+      <mesh material={ARMINK} position={hand} scale={[0.03, 0.032, 0.03]}>
+        <sphereGeometry args={[1, 20, 14]} />
+      </mesh>
     </>
   );
 };

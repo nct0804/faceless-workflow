@@ -5,6 +5,7 @@
  */
 import React, {useLayoutEffect, useMemo} from 'react';
 import * as THREE from 'three';
+import {useCurrentFrame} from 'remotion';
 import {instantiate, useGLB} from './assets';
 import {drawFace, type FaceState} from './face';
 import {CHAR_RAMP, toon} from './materials';
@@ -30,6 +31,12 @@ export type Pose = {
   walkAmp?: number;
   slump?: number; // 0..1 sad posture (head down, shoulders in)
   breathe?: number; // frame-driven breathing phase (radians)
+  /** stance (RicksClips poses are never stiff): legs apart (deg), knee bend (deg), hip shift sideways (m) */
+  legL?: number;
+  legR?: number;
+  kneeL?: number;
+  kneeR?: number;
+  hipShift?: number;
 };
 
 /** tested pose presets (see looks/CharTest.tsx) */
@@ -58,11 +65,14 @@ export type CharacterProps = {
   /** IK: put the hands EXACTLY here (world space). The arms solve themselves (two-bone IK, elbows down/out).
    *  Use with gripPoints() / drawGrip() in Props.tsx so held things are really held. */
   reach?: {L?: [number, number, number]; R?: [number, number, number]; poleL?: [number, number, number]; poleR?: [number, number, number]};
+  /** 0..1 idle life: head drift + tilt, weight shift, arm sway (each character on its own rhythm). 0 = frozen */
+  alive?: number;
 };
 
 export const Character: React.FC<CharacterProps> = ({
-  id, position = [0, 0, 0], rotation = 0, scale = 1, pose = {}, face = {}, outline = 6, recolor, visible = true, reach,
+  id, position = [0, 0, 0], rotation = 0, scale = 1, pose = {}, face = {}, outline = 4, recolor, visible = true, reach, alive = 1,
 }) => {
+  const frame = useCurrentFrame();
   const g = useGLB(id);
   const {canvas, tex, faceMat} = useMemo(() => {
     const c = document.createElement('canvas');
@@ -125,8 +135,23 @@ export const Character: React.FC<CharacterProps> = ({
       b.updateMatrixWorld(true);
     };
 
-    const p = pose;
+    // idle life: a slow, per-character drift (never a frozen statue)
+    const seed = (id.length * 1.7 + position[0] * 3.1 + position[2] * 1.3) % 6.28;
+    const t = frame / 30;
+    const life = {
+      headTilt: alive * (Math.sin(t * 0.9 + seed) * 3 + Math.sin(t * 2.3 + seed * 2) * 1.2),
+      headTurn: alive * Math.sin(t * 0.55 + seed * 1.3) * 4,
+      headNod: alive * Math.sin(t * 1.4 + seed) * 1.5,
+      side: alive * Math.sin(t * 0.7 + seed) * 1.6,
+      arm: alive * Math.sin(t * 1.1 + seed) * 3,
+    };
+    const p = {...pose,
+      headTilt: (pose.headTilt ?? 0) + life.headTilt, headTurn: (pose.headTurn ?? 0) + life.headTurn,
+      headNod: (pose.headNod ?? 0) + life.headNod, side: (pose.side ?? 0) + life.side,
+      armL: (pose.armL ?? 8) + life.arm, armR: (pose.armR ?? 8) - life.arm,
+      breathe: pose.breathe ?? t * 2.6 + seed};
     const br = Math.sin(p.breathe ?? 0);
+    if (p.hipShift) root.position.x += p.hipShift * Math.cos(D(rotation));
     const slump = p.slump ?? 0;
     const walkA = p.walkAmp ?? 1;
     const ph = (p.walk ?? 0) * Math.PI * 2;
@@ -160,6 +185,12 @@ export const Character: React.FC<CharacterProps> = ({
       rot('leg.L.2', AX.x, 88 * sit);
       rot('leg.R.2', AX.x, 88 * sit);
     }
+    // stance: legs apart + knee bend (the counter-rotation keeps the feet under the body)
+    if (p.legL) rot('leg.L.1', AX.z, p.legL);
+    if (p.legR) rot('leg.R.1', AX.z, -p.legR);
+    if (p.kneeL) { rot('leg.L.1', AX.x, -p.kneeL * 0.5); rot('leg.L.2', AX.x, p.kneeL); }
+    if (p.kneeR) { rot('leg.R.1', AX.x, -p.kneeR * 0.5); rot('leg.R.2', AX.x, p.kneeR); }
+    if (p.kneeL || p.kneeR) root.position.y -= 0.002 * Math.max(p.kneeL ?? 0, p.kneeR ?? 0);
     if (walking) {
       rot('leg.L.1', AX.x, -Math.sin(ph) * 28 * walkA);
       rot('leg.R.1', AX.x, Math.sin(ph) * 28 * walkA);

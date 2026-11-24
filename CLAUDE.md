@@ -51,6 +51,18 @@ Every video goes through these skills, one at a time. Don't skip ahead. Each ste
 
 ## Look and quality rules (learned from feedback; check every render)
 
+- **Character anatomy v3 (measured from RicksClips; user, 2026-11-24)**, in both kits:
+  - About 3.3 heads tall. A small round white head sits straight on the body.
+  - A THIN pill torso (about 2/3 of the head width) that IS the outfit, with real details (cords, pocket, collar, buttons, zip, belt).
+  - Long ink-stick legs (about 38% of the height) and arms, small ink hands, small shoes.
+  - Identity comes from hair, caps and accessories:
+    - Mo: mustard hoodie, messy dark hair with a side fringe, white sneakers
+    - Theo: sage vest, glasses, neat hair
+    - Lia: coral dress, buns
+    - Dex: red jacket, cap worn backwards
+    - Crowd: grey hoods up, amber phone faces
+  - Poses are never stiff: stance, knee bend, hip shift. `alive` idle motion is on by default.
+  - Sources: `assets/blender/characters/person.py` (3D) and `studio/src/kit/characters.tsx` (flat). The sheet is `CharTest`.
 - **Characters stay simple (RicksClips); the FACES act** (user, 2026-11-24). One shared renderer, `studio/src/kit3d/face.ts`, is used by both kits. It has 34 presets:
   - deadpan, smug, smirk, side-eye, unimpressed, bored, suspicious, thinking
   - happy, grin, laugh, proud, excited, love, content, relieved

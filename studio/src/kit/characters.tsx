@@ -47,43 +47,79 @@ const bowl = (r: number) => {
   return s;
 };
 
-// shared geometry (built once)
+// shared geometry (built once). v3 anatomy (RicksClips-measured): small round white head straight on a THIN pill
+// torso that IS the outfit, long ink-stick legs and arms, small ink hands, hair/caps for identity.
+const pillTorso = (wBottom: number, wTop: number, h: number, r: number) => {
+  const s = new THREE.Shape();
+  s.moveTo(-wBottom / 2 + r, 0);
+  s.lineTo(wBottom / 2 - r, 0);
+  s.quadraticCurveTo(wBottom / 2, 0, wBottom / 2, r);
+  s.lineTo(wTop / 2, h - r);
+  s.quadraticCurveTo(wTop / 2, h, wTop / 2 - r, h);
+  s.lineTo(-wTop / 2 + r, h);
+  s.quadraticCurveTo(-wTop / 2, h, -wTop / 2, h - r);
+  s.lineTo(-wBottom / 2, r);
+  s.quadraticCurveTo(-wBottom / 2, 0, -wBottom / 2 + r, 0);
+  return s;
+};
+/** circle segment above y = cut (hair caps, cap domes) */
+const capShape = (r: number, cut: number) => {
+  const a = Math.asin(Math.max(-1, Math.min(1, cut / r)));
+  const s = new THREE.Shape();
+  s.absarc(0, 0, r, a, Math.PI - a, false);
+  s.closePath();
+  return s;
+};
+const tri = (pts: [number, number][]) => {
+  const s = new THREE.Shape();
+  s.moveTo(...pts[0]);
+  pts.slice(1).forEach((p) => s.lineTo(...p));
+  s.closePath();
+  return s;
+};
+
+const HEAD_R = 58;
+const TORSO_H = 128;
+const HEAD_Y = TORSO_H + HEAD_R - 6; // sits straight on the body
+const LEG_H = 112;
+const SKIN = '#F7F5F0';
+
 const S = {
-  body: softBody(150, 150),
-  hood: roundedRect(170, 64, 30),
-  head: roundedRect(112, 136, 56),
-  eye: ellipse(7, 12),
-  eyeClosedHappy: arcShape(10, 4, 0.15, Math.PI - 0.15),
-  arm: roundedRect(34, 112, 17),
-  cast: roundedRect(42, 58, 14),
-  pocket: roundedRect(80, 6, 3),
-  brow: roundedRect(22, 4, 2),
-  string: roundedRect(4, 22, 2),
-  mouthHappy: arcShape(12, 4, Math.PI * 1.1, Math.PI * 1.9),
-  mouthSad: arcShape(10, 4, Math.PI * 0.15, Math.PI * 0.85),
-  mouthLaugh: bowl(15),
-  mouthO: ellipse(6, 8),
-  mouthFlat: roundedRect(18, 4, 2),
-  glassRing: ring(19, 4),
-  bridge: roundedRect(12, 4, 2),
-  bun: ellipse(22, 22),
-  capDome: (() => {
-    const s = new THREE.Shape();
-    s.absellipse(0, 0, 62, 40, 0, Math.PI, false, 0);
-    s.closePath();
-    return s;
-  })(),
-  brim: roundedRect(70, 12, 6),
-  leg: roundedRect(32, 96, 14),
-  shoe: roundedRect(52, 20, 10),
-  shades: roundedRect(32, 17, 6),
-  shadesBridge: roundedRect(14, 4, 2),
-  miniPhone: roundedRect(34, 62, 8),
-  miniScreen: roundedRect(26, 50, 5),
+  torso: pillTorso(88, 72, TORSO_H, 30),
+  dress: pillTorso(118, 70, TORSO_H, 26),
+  head: ellipse(HEAD_R, HEAD_R),
+  arm: roundedRect(9, 118, 4.5),
+  hand: ellipse(10, 10),
+  leg: roundedRect(10, LEG_H, 5),
+  shoe: roundedRect(32, 15, 7),
+  cast: roundedRect(22, 40, 8),
+  hood: ellipse(50, 17),
+  string: roundedRect(3.5, 30, 1.75),
+  pocket: roundedRect(48, 20, 7),
+  button: ellipse(3.5, 3.5),
+  zip: roundedRect(3, 104, 1.5),
+  belt: roundedRect(96, 9, 4),
+  collarL: tri([[-2, 0], [-26, 4], [-14, -18]]),
+  collarR: tri([[2, 0], [26, 4], [14, -18]]),
+  hairMessy: capShape(HEAD_R + 4, 14),
+  hairNeat: capShape(HEAD_R + 4, 22),
+  hairBack: ellipse(HEAD_R + 4, HEAD_R + 4),
+  fringe: ellipse(36, 15),
+  bun: ellipse(21, 21),
+  capDome: capShape(HEAD_R + 5, 20),
+  brim: roundedRect(52, 10, 5),
+  glassRing: ring(15, 3),
+  bridge: roundedRect(10, 3, 1.5),
+  shades: roundedRect(30, 16, 6),
+  shadesBridge: roundedRect(12, 3, 1.5),
+  miniPhone: roundedRect(30, 54, 7),
+  miniScreen: roundedRect(23, 44, 4),
 };
 
 /** any expression of the shared face system (kit3d/face.ts): 34 presets ('fake' = laughing mouth, dead eyes) */
 export type Mood = FaceMood;
+/** outfit + identity pieces. hood = Mo's hoodie, hair = messy hair with fringe, neat = side-part hair */
+export type Accessory = 'hood' | 'glasses' | 'buns' | 'cap' | 'shades' | 'hair' | 'neat' | 'vest' | 'jacket' | 'dress';
 
 /** the face as a canvas-textured plane over the head (drawn by kit3d/face.ts) */
 const FacePlane: React.FC<{mood: Mood; lookX?: number; lookY?: number; blink?: number; eyeScale?: number; browY?: number}> = (p) => {
@@ -98,13 +134,12 @@ const FacePlane: React.FC<{mood: Mood; lookX?: number; lookY?: number; blink?: n
   drawFace(canvas.getContext('2d')!, {mood: p.mood, lookX: p.lookX, lookY: p.lookY, blink: p.blink, eyeScale: p.eyeScale, browY: p.browY});
   tex.needsUpdate = true;
   return (
-    <mesh position={[0, 2, 0.1]}>
-      <planeGeometry args={[112, 112]} />
+    <mesh position={[0, -2, 0.1]}>
+      <planeGeometry args={[HEAD_R * 2, HEAD_R * 2]} />
       <meshBasicMaterial map={tex} transparent depthWrite={false} />
     </mesh>
   );
 };
-export type Accessory = 'hood' | 'glasses' | 'buns' | 'cap' | 'shades';
 
 export type PersonProps = {
   x: number;
@@ -122,6 +157,7 @@ export type PersonProps = {
   armsFront?: boolean;
   accessories?: Accessory[];
   capColor?: string;
+  hairColor?: string;
   castOn?: 'L' | 'R';
   standing?: boolean;
   pants?: string;
@@ -142,8 +178,10 @@ export type PersonProps = {
   /** hand that holds a phone, with screen glow */
   holdPhone?: 'L' | 'R';
   phoneGlow?: number;
-  /** seen from behind: no face, hood lies over the shoulders */
+  /** seen from behind: no face, hair covers the back of the head */
   back?: boolean;
+  /** 0..1 idle life (head drift, weight shift, arm sway) */
+  alive?: number;
 };
 
 export const Person: React.FC<PersonProps> = ({
@@ -151,8 +189,8 @@ export const Person: React.FC<PersonProps> = ({
   y,
   z = 10,
   scale = 1,
-  color = C.hero,
-  shade = C.heroShade,
+  color = '#8A8FA3',
+  shade = '#767B8E',
   mood = 'neutral',
   lookX = 0,
   lookY = 0,
@@ -161,9 +199,9 @@ export const Person: React.FC<PersonProps> = ({
   armsFront = false,
   accessories = [],
   capColor = '#3E7C7A',
+  hairColor = '#2E2420',
   castOn,
   standing = false,
-  pants = '#2A2F3D',
   blinkOffset = 40, // never blink on a cut (frame 0 of a shot)
   headTilt = 0,
   bodyTilt = 0,
@@ -177,33 +215,35 @@ export const Person: React.FC<PersonProps> = ({
   holdPhone,
   phoneGlow = 1,
   back = false,
+  alive = 1,
 }) => {
   const frame = useCurrentFrame();
   const t = frame + blinkOffset;
   const blinking = t % 96 < 4 && mood !== 'laugh';
   const breath = breathe ? Math.sin((frame + blinkOffset) / 22) * 2 : 0;
-  const legLift = standing ? 92 : 0;
+  // idle life: slow head drift + arm sway, each character on its own rhythm
+  const sec = (frame + blinkOffset * 7) / 30;
+  const lifeTilt = alive * (Math.sin(sec * 0.9) * 3 + Math.sin(sec * 2.3) * 1.2);
+  const lifeArm = alive * Math.sin(sec * 1.1) * 3;
+  const legLift = standing ? LEG_H : 0;
   const hop = bounce * 10 + (walk !== undefined ? Math.abs(Math.sin(walk)) * 5 : 0);
-
-  const eyeBase = mood === 'shock' ? 1.3 : mood === 'sad' || mood === 'tired' || mood === 'fake' ? 0.72 : 1;
-  const eyeY = blinking ? 0.12 : (eyeScale ?? eyeBase);
-  const browTilt = mood === 'sad' || mood === 'tired' ? 0.25 : mood === 'shock' ? -0.05 : 0;
-  const browLift = browLiftProp ?? (mood === 'shock' ? 10 : mood === 'sad' ? -2 : mood === 'laugh' ? 4 : 0);
-  const hx = lookX * 10;
-  const hy = lookY * 6;
   const has = (a: Accessory) => accessories.includes(a);
   const ink = C.ink;
   const armZ = armsFront ? 0.6 : -0.5;
+  const hx = lookX * 10;
+  const hy = lookY * 6;
+  const torso = has('dress') ? S.dress : S.torso;
 
   const arm = (side: 'L' | 'R', angle: number) => (
-    <group position={[side === 'R' ? 52 : -52, 112 + breath, armZ]} rotation={[0, 0, THREE.MathUtils.degToRad(angle)]}>
-      <Flat shape={S.arm} color={shade} outline={ink} position={[0, -50, 0]} />
-      {castOn === side && <Flat shape={S.cast} color="#F4F1EA" outline={ink} position={[0, -72, 0.05]} />}
+    <group position={[side === 'R' ? 34 : -34, TORSO_H - 18 + breath, armZ]} rotation={[0, 0, THREE.MathUtils.degToRad(angle + (side === 'R' ? lifeArm : -lifeArm))]}>
+      <Flat shape={S.arm} color={ink} position={[0, -59, 0]} />
+      <Flat shape={S.hand} color={ink} position={[0, -120, 0.02]} />
+      {castOn === side && <Flat shape={S.cast} color="#F4F1EA" outline={ink} position={[0, -84, 0.05]} />}
       {holdPhone === side && (
         <>
-          <Flat shape={S.miniPhone} color="#1A1D24" outline="#3A4050" outlineWidth={2} position={[0, -112, 0.2]} />
-          <Flat shape={S.miniScreen} color="#BFD2FF" opacity={0.85 * phoneGlow} position={[0, -112, 0.25]} />
-          <Glow x={0} y={-112} z={36} size={260} color="#BFD2FF" intensity={0.35 * phoneGlow} />
+          <Flat shape={S.miniPhone} color="#1A1D24" outline="#3A4050" outlineWidth={2} position={[0, -128, 0.2]} />
+          <Flat shape={S.miniScreen} color="#BFD2FF" opacity={0.85 * phoneGlow} position={[0, -128, 0.25]} />
+          <Glow x={0} y={-128} z={36} size={260} color="#BFD2FF" intensity={0.35 * phoneGlow} />
         </>
       )}
     </group>
@@ -215,63 +255,87 @@ export const Person: React.FC<PersonProps> = ({
         ([-1, 1] as const).map((side) => {
           const swing = walk !== undefined ? Math.sin(walk + (side > 0 ? 0 : Math.PI)) * 0.42 : 0;
           return (
-            <group key={side} position={[side * 30, 92, -0.3]} rotation={[0, 0, swing]}>
-              <Flat shape={S.leg} color={pants} outline={ink} position={[0, -44, 0]} />
-              <Flat shape={S.shoe} color="#15171D" position={[side * 4 + 6, -84, 0.1]} />
+            <group key={side} position={[side * 18, LEG_H, -0.3]} rotation={[0, 0, swing + side * 0.04]}>
+              <Flat shape={S.leg} color={ink} position={[0, -LEG_H / 2, 0]} />
+              <Flat shape={S.shoe} color={has('hood') ? '#F4F1EA' : '#2A2E38'} outline={ink} outlineWidth={3} position={[side * 4 + 7, -LEG_H + 4, 0.1]} />
             </group>
           );
         })}
       <group position={[0, legLift, 0]} rotation={[0, 0, THREE.MathUtils.degToRad(bodyTilt)]}>
         {arm('R', armR)}
         {arm('L', armL)}
-        {has('hood') && <Flat shape={S.hood} color={shade} outline={ink} position={[0, 150 + breath * 0.6, back ? 0.15 : -0.2]} />}
-        <Flat shape={S.body} color={color} outline={ink} position={[0, breath * 0.3, 0]} />
-        {has('hood') && !back && (
+        {has('hood') && <Flat shape={S.hood} color={shade} outline={ink} position={[0, TORSO_H - 6 + breath * 0.6, back ? 0.15 : -0.2]} />}
+        <Flat shape={torso} color={color} outline={ink} position={[0, breath * 0.3, 0]} />
+        {!back && (
           <>
-            <Flat shape={S.pocket} color={shade} position={[0, 40 + breath * 0.3, 0.1]} />
-            <Flat shape={S.string} color={shade} position={[-14, 128 + breath * 0.3, 0.1]} />
-            <Flat shape={S.string} color={shade} position={[14, 128 + breath * 0.3, 0.1]} />
+            {has('hood') && (
+              <>
+                <Flat shape={S.pocket} color={shade} outline={ink} outlineWidth={2.5} position={[0, 30 + breath * 0.3, 0.1]} />
+                <Flat shape={S.string} color="#F4F1EA" position={[-10, TORSO_H - 26 + breath * 0.3, 0.12]} />
+                <Flat shape={S.string} color="#F4F1EA" position={[10, TORSO_H - 26 + breath * 0.3, 0.12]} />
+              </>
+            )}
+            {(has('vest') || has('jacket') || has('dress')) && (
+              <>
+                <Flat shape={S.collarL} color="#F4F1EA" outline={ink} outlineWidth={2} position={[0, TORSO_H - 2, 0.15]} />
+                <Flat shape={S.collarR} color="#F4F1EA" outline={ink} outlineWidth={2} position={[0, TORSO_H - 2, 0.15]} />
+              </>
+            )}
+            {has('vest') && [0, 1, 2].map((k) => <Flat key={k} shape={S.button} color={ink} position={[0, TORSO_H - 40 - k * 28, 0.12]} />)}
+            {has('jacket') && <Flat shape={S.zip} color={shade} position={[0, TORSO_H / 2 - 6, 0.12]} />}
+            {has('dress') && <Flat shape={S.belt} color={shade} position={[0, 50, 0.12]} />}
           </>
         )}
         {occlude && (
           <>
-            <Flat shape={S.body} color="#000" occluder position={[0, breath * 0.3, 60]} />
-            <Flat shape={S.head} color="#000" occluder position={[0, 210 + breath, 60]} />
+            <Flat shape={torso} color="#000" occluder position={[0, breath * 0.3, 60]} />
+            <Flat shape={S.head} color="#000" occluder position={[0, HEAD_Y + breath, 60]} />
           </>
         )}
         {/* head */}
-        <group position={[0, 210 + breath, 0.2]} rotation={[0, 0, THREE.MathUtils.degToRad(headTilt)]}>
+        <group position={[0, HEAD_Y + breath, 0.2]} rotation={[0, 0, THREE.MathUtils.degToRad(headTilt + lifeTilt)]}>
           {has('buns') && (
             <>
-              <Flat shape={S.bun} color={shade} outline={ink} position={[-48, 58, -0.1]} />
-              <Flat shape={S.bun} color={shade} outline={ink} position={[48, 58, -0.1]} />
+              <Flat shape={S.bun} color={hairColor} outline={ink} position={[-44, 46, -0.1]} />
+              <Flat shape={S.bun} color={hairColor} outline={ink} position={[44, 46, -0.1]} />
             </>
           )}
-          <Flat shape={S.head} color={color} outline={ink} />
+          <Flat shape={S.head} color={SKIN} outline={ink} />
           {!back && (
-          <>
-          {/* face: the shared expression renderer (kit3d/face.ts), same faces as the 3D kit */}
-          <FacePlane mood={mood} lookX={lookX} lookY={lookY} blink={blinking ? 1 : 0} eyeScale={eyeScale} browY={(browLiftProp ?? 0) / 5} />
-          {has('shades') && (
             <>
-              <Flat shape={S.shades} color="#0E0F13" position={[-21 + hx * 0.8, 8 + hy, 0.16]} />
-              <Flat shape={S.shades} color="#0E0F13" position={[21 + hx * 0.8, 8 + hy, 0.16]} />
-              <Flat shape={S.shadesBridge} color="#0E0F13" position={[hx * 0.8, 12 + hy, 0.16]} />
+              {/* face: the shared expression renderer (kit3d/face.ts), same faces as the 3D kit */}
+              <FacePlane mood={mood} lookX={lookX} lookY={lookY} blink={blinking ? 1 : 0} eyeScale={eyeScale} browY={(browLiftProp ?? 0) / 5} />
+              {has('shades') && (
+                <>
+                  <Flat shape={S.shades} color="#0E0F13" position={[-20 + hx * 0.8, 4 + hy, 0.16]} />
+                  <Flat shape={S.shades} color="#0E0F13" position={[20 + hx * 0.8, 4 + hy, 0.16]} />
+                  <Flat shape={S.shadesBridge} color="#0E0F13" position={[hx * 0.8, 8 + hy, 0.16]} />
+                </>
+              )}
+              {has('glasses') && (
+                <>
+                  <Flat shape={S.glassRing} color={ink} position={[-20 + hx * 0.8, 3 + hy, 0.15]} />
+                  <Flat shape={S.glassRing} color={ink} position={[20 + hx * 0.8, 3 + hy, 0.15]} />
+                  <Flat shape={S.bridge} color={ink} position={[hx * 0.8, 6 + hy, 0.15]} />
+                </>
+              )}
             </>
           )}
-          {has('glasses') && (
+          {/* hair: the identity (messy + fringe for Mo, neat side part, buns) */}
+          {back && (has('hair') || has('neat') || has('buns')) && <Flat shape={S.hairBack} color={hairColor} outline={ink} position={[0, 0, 0.3]} />}
+          {!back && has('hair') && (
             <>
-              <Flat shape={S.glassRing} color={ink} position={[-21 + hx * 0.8, 8 + hy, 0.15]} />
-              <Flat shape={S.glassRing} color={ink} position={[21 + hx * 0.8, 8 + hy, 0.15]} />
-              <Flat shape={S.bridge} color={ink} position={[hx * 0.8, 10 + hy, 0.15]} />
+              <Flat shape={S.hairMessy} color={hairColor} outline={ink} position={[0, 0, 0.3]} />
+              <group position={[-18, 22, 0.31]} rotation={[0, 0, 0.42]}>
+                <Flat shape={S.fringe} color={hairColor} />
+              </group>
             </>
           )}
-          </>
-          )}
+          {!back && (has('neat') || has('buns')) && <Flat shape={S.hairNeat} color={hairColor} outline={ink} position={[0, 0, 0.3]} />}
           {has('cap') && (
             <>
-              <Flat shape={S.capDome} color={capColor} outline={ink} position={[0, 42, 0.3]} />
-              <Flat shape={S.brim} color={capColor} outline={ink} position={[lookX >= 0 ? 46 : -46, 44, 0.32]} />
+              <Flat shape={S.capDome} color={capColor} outline={ink} position={[0, 0, 0.32]} />
+              <Flat shape={S.brim} color={capColor} outline={ink} position={[lookX >= 0 ? -48 : 48, 30, 0.33]} />
             </>
           )}
         </group>
@@ -280,20 +344,20 @@ export const Person: React.FC<PersonProps> = ({
   );
 };
 
-/* ---------- Mo (the hero) = Person with the hoodie ---------- */
+/* ---------- Mo (the hero) = Person in his mustard hoodie, messy dark hair, white sneakers ---------- */
 
 type HeroProps = Omit<PersonProps, 'accessories' | 'armR'> & {armAngle?: number; armR?: number; extra?: Accessory[]};
 
-export const Hero: React.FC<HeroProps> = ({armAngle, armR, extra = [], ...p}) => (
-  <Person {...p} armR={armR ?? armAngle ?? 10} accessories={['hood', ...extra]} />
+export const Hero: React.FC<HeroProps> = ({armAngle, armR, extra = [], color, shade, ...p}) => (
+  <Person {...p} color={color ?? '#E8A33D'} shade={shade ?? '#C98424'} armR={armR ?? armAngle ?? 10} accessories={['hood', 'hair', ...extra]} />
 );
 
-/* ---------- cast ---------- */
+/* ---------- cast (same outfits as the 3D cast in assets/blender/characters/person.py) ---------- */
 export const CAST = {
-  theo: {color: C.sage, shade: '#6A7868', accessories: ['glasses'] as Accessory[]},
-  lia: {color: '#E9D9C6', shade: '#D6C1A8', accessories: ['buns'] as Accessory[]},
-  dex: {color: C.slate, shade: '#5E6A82', accessories: ['cap'] as Accessory[], capColor: '#3E7C7A'},
-  friendA: {color: C.clay, shade: '#86685A', accessories: [] as Accessory[]},
+  theo: {color: '#6E9A7E', shade: '#58806A', accessories: ['glasses', 'neat', 'vest'] as Accessory[], hairColor: '#6B4A32'},
+  lia: {color: '#E8766E', shade: '#C95C56', accessories: ['buns', 'dress'] as Accessory[], hairColor: '#3A2A22'},
+  dex: {color: '#C9443C', shade: '#A8362F', accessories: ['cap', 'jacket'] as Accessory[], capColor: '#3E9C93'},
+  friendA: {color: '#9C7B6B', shade: '#86685A', accessories: ['neat'] as Accessory[], hairColor: '#4A3428'},
   friendB: {color: '#8A8FA3', shade: '#767B8E', accessories: ['cap'] as Accessory[], capColor: '#4A4F63'},
 };
 

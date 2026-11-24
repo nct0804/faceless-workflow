@@ -142,7 +142,11 @@ export const instantiate = (g: GLTF, o: StyleOpts = {}) => {
       mesh.castShadow = false;
       mesh.userData.noInk = true;
     }
-    if (o.outline && src.name !== 'FACE' && !src.name.startsWith('GLOW_')) {
+    // ink hull only on the big shapes (head, body, hair, shoes): limbs are already ink, and small details
+    // (cords, buttons, glasses) would turn into fat black blobs (RicksClips: clean thin lines)
+    mesh.geometry.computeBoundingSphere();
+    const big = (mesh.geometry.boundingSphere?.radius ?? 1) > 0.06;
+    if (o.outline && src.name !== 'FACE' && src.name !== 'INK' && !src.name.startsWith('GLOW_') && big) {
       outlines.push(mesh);
     }
   });

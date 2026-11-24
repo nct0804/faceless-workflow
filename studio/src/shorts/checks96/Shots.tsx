@@ -36,7 +36,7 @@ const fwd = (p: V3, yawDeg: number, d: number, up = 0): V3 => [p[0] + Math.sin(D
 const side = (p: V3, yawDeg: number, d: number): V3 => [p[0] + Math.cos(D(yawDeg)) * d, p[1], p[2] - Math.sin(D(yawDeg)) * d];
 /** phone held with POSES.holdPhone (same offset sitting or standing, verified in looks/LookTest) */
 const phoneIn = (root: V3, yaw: number): {at: V3; rot: V3} => ({at: fwd(root, yaw, 0.3, 0.74), rot: [-50, yaw + 180, 0]});
-const headOf = (root: V3, yaw: number, sit = true): V3 => fwd(root, yaw, sit ? 0.1 : 0.02, 1.22);
+const headOf = (root: V3, yaw: number, sit = true): V3 => fwd(root, yaw, sit ? 0.06 : 0.02, 1.06); // v3 body: head centre 1.08
 
 type Screen = (ctx: CanvasRenderingContext2D, w: number, h: number) => void;
 const LOOK: PostSettings = {bloom: 0.85};
@@ -71,7 +71,7 @@ const SKETCH_AT: V3 = [-0.95, B.deskTop, -1.97];
 const DESK_A: Key = {pos: [-0.35, 1.45, -4.1], target: [-0.98, 1.0, -1.7], fov: 34};
 const DESK_B: Key = {pos: [-0.55, 1.42, -3.75], target: [-0.98, 1.02, -1.72], fov: 34};
 const CUT = B.deskCutaway;
-const MO_DESK_HEAD: V3 = [B.moDesk[0], 1.28, B.moDesk[2] - 0.12];
+const MO_DESK_HEAD: V3 = [B.moDesk[0], 1.1, B.moDesk[2] - 0.1];
 
 /** a phone filling the frame, held in front of Mo at the desk (camera sits where his eyes are) */
 const DESK_PHONE: V3 = [-0.98, 1.02, -1.86];
@@ -94,8 +94,8 @@ const PhoneMacro: React.FC<{screen: Screen; len: number; glow?: number; tilt?: n
 /** Mo drawing at the desk: the right mitten holds a real pencil whose tip rides the stroke being drawn (strokeTip),
  *  the left hand holds the page. p = drawing progress 0..1 (the page shows exactly what the pencil has drawn) */
 // Mo's shoulders when seated at the desk (for POV arms)
-const SH_R: V3 = [-0.8, 0.98, -1.58];
-const SH_L: V3 = [-1.2, 0.98, -1.58];
+const SH_R: V3 = [-0.84, 0.9, -1.56];
+const SH_L: V3 = [-1.16, 0.9, -1.56];
 const DeskDrawing: React.FC<{strokes: Stroke[]; label: string; p: number; face?: FaceState; lean?: number; pov?: boolean}> = ({strokes, label, p, face, lean = 14, pov = false}) => {
   const f = useCurrentFrame();
   const uv = strokeToPage(strokeTip(strokes, Math.max(0.001, p)));
@@ -210,7 +210,7 @@ const Arena: React.FC<{down: number; wave?: number; clear?: boolean; hideHero?: 
   );
 };
 const STAD: PostSettings = {bloom: 0.9, bloomThreshold: 0.95};
-const MO_HEAD_ST: V3 = [0, 1.32, 0.03];
+const MO_HEAD_ST: V3 = [0, 1.08, 0.03];
 
 // ================================================================ the shots
 // S01a  hook: phone lights Mo's face at night
@@ -434,7 +434,7 @@ export const S13a: React.FC<{len: number}> = ({len}) => {
 // S13b  "Because in his head...": push into Mo's eye (dissolves into the stadium)
 export const S13b: React.FC<{len: number}> = ({len}) => {
   const f = useCurrentFrame();
-  const eye = add3(fwd(B.moBed, B.moBedYaw, 0.27, 1.22 + 0.03), [0.07, 0, 0]);
+  const eye = add3(fwd(B.moBed, B.moBedYaw, 0.2, 1.1), [0.05, 0, 0]);
   const t = prog(f, 0, len, Easing.in(Easing.cubic));
   const cam: Cam = {pos: mix3(add3(eye, [0.25, -0.02, 1.4]), add3(eye, [0.005, 0, 0.06]), t), target: eye, fov: mix(30, 22, t), shake: 0.002};
   return (
@@ -522,7 +522,7 @@ export const S18a: React.FC<{len: number}> = ({len}) => {
   const yaw = heroYaw(h.t, h.a);
   // their point of view: their own little number, Mo a blur in the spotlight far behind it
   const ph = phoneIn(root, yaw).at;
-  const eye = fwd(root, yaw, 0.08, 1.3);
+  const eye = fwd(root, yaw, 0.08, 1.08);
   const cam = move(f, len, {pos: eye, target: add3(ph, [0, 0.03, 0]), fov: 34}, {pos: mix3(eye, ph, 0.18), target: add3(ph, [0, 0.03, 0]), fov: 34}, 0.003);
   return (
     <Stage background={S.bg} fog={S.fog} cam={cam} post={{...STAD, aperture: 2.4, focusAt: ph, maxBlur: 26, bloom: 0.6, bloomThreshold: 1.25}}>
@@ -537,7 +537,7 @@ export const S18b: React.FC<{len: number}> = ({len}) => {
   const h = HERO_SEATS[1];
   const root = heroRoot(h.t, h.a);
   const yaw = heroYaw(h.t, h.a);
-  const head = add3(root, [0, 1.3, 0]);
+  const head = add3(root, [0, 1.08, 0]);
   const cam = move(f, len, {pos: fwd(root, yaw, 2.3, 1.45), target: head, fov: 38}, {pos: fwd(root, yaw, 2.0, 1.4), target: head, fov: 38});
   return (
     <Stage background={S.bg} fog={S.fog} cam={cam} post={{...STAD, aperture: 1.6, focusAt: head, maxBlur: 22}}>
