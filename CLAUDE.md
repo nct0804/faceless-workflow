@@ -60,7 +60,7 @@ Every video goes through these skills, one at a time. Don't skip ahead. Each ste
 
 - `videos/<slug>/brief.md`: the state of each video (format, length, voice, step checklist). `/new-video` reads it.
 - `scripts/`: scripts and shot lists of finished videos.
-- `research/`: style studies (`MERGED_STYLE.md`, `dayonefilms/`, `ricksclips/`).
+- `research/`: style studies (`MERGED_STYLE.md`, `dayonefilms/`, `ricksclips/`). The full third-party transcripts stay local (git-ignored), because the repo is public.
 - `assets/`: Blender build scripts. See `assets/README.md`; build headless with `/Applications/Blender.app/Contents/MacOS/Blender -b --factory-startup -P <script>`.
 - `studio/`: the Remotion project. See `studio/README.md`.
   - `src/kit/`: the flat 2D kit (long videos).
