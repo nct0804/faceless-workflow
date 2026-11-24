@@ -1,0 +1,22 @@
+# dependencies / environments
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+
+# renders and caches (rebuilt by the scripts)
+studio/out/
+studio/.remotion/
+studio/public/audio/**/*.wav
+studio/public/audio/**/_tts/
+assets/previews/
+*.blend1
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# third-party material from the style research (kept locally, not published)
+research/*/transcripts/
+research/*/videos/

@@ -1,0 +1,27 @@
+{
+  "name": "faceless-studio",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render",
+    "still": "remotion still",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@react-three/fiber": "9.8.2",
+    "@remotion/cli": "4.0.546",
+    "@remotion/google-fonts": "4.0.546",
+    "@remotion/three": "4.0.546",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "remotion": "4.0.546",
+    "three": "0.187.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/three": "0.187.0",
+    "typescript": "5.9.3"
+  }
+}
