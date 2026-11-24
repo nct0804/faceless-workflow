@@ -40,7 +40,7 @@ If the user turned on a paid voice service (for example ElevenLabs) for this vid
 ## 2c. Record your own voice
 
 Give the user this recording guide:
-- **Read the `say` lines** from `scripts/<NN>-<slug>/script.md`, one line at a time.
+- **Read the `say` lines** from `videos/<NN>-<slug>/script.md`, one line at a time.
 - **Pause about half a second between lines.** Keep pauses inside a line short.
 - **Mic:** quiet room, about 15 cm from the mic. A phone voice memo is fine. Save it as WAV or M4A.
 - **Retakes:** do the whole read again rather than patching.

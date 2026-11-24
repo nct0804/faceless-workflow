@@ -43,7 +43,7 @@ From `research/MERGED_STYLE.md` section 6:
 Rules: present tense for action, no feelings named, one image per clause, one number per beat, no call to action.
 
 Deliverables:
-- `scripts/<NN>-<slug>/script.md`: a beats table with the lines, plus a rough shot idea per line.
+- `videos/<NN>-<slug>/script.md`: a beats table with the lines, plus a rough shot idea per line.
 - `studio/src/shorts/<slug>/lines.json`: `[{id, beat, cap, say, gap}]`.
   - `cap` holds the on-screen text with `*key words*`, which turn amber.
   - `say` is the spoken text, with numbers written as words (for local voices).
@@ -51,7 +51,7 @@ Deliverables:
 
 ### Long: the Day One beat sheet (silent, captions)
 
-Use `scripts/Nobody-is-watching/01-nobody-is-watching.md` as the model:
+Use `videos/01-nobody-is-watching/script.md` as the model:
 
 1. Normal world
 2. The hook / inciting habit
@@ -66,7 +66,7 @@ For each shot, write: number, duration, place, mood, action, caption.
 
 Places must be existing backdrops (`bedroom`, `kitchen`, `classroom`, `hallway`, `bathroom`, `gym`, `street`) or flagged as **new** for step 2. Moods come from `studio/src/kit/film.tsx`: joy, warm, day, cool, night, grey, anxious, bottom, dawn, bright. The colour script should **brighten with hope** and darken only at the low beats.
 
-Deliverable: `scripts/<NN>-<slug>/script.md` with the shot table and captions.
+Deliverable: `videos/<NN>-<slug>/script.md` with the shot table and captions.
 
 ## E. Confirm
 

@@ -7,7 +7,7 @@ Animated self-improvement videos about **Mo**, a small paper-white kid in an ove
 | Format | 16:9, default **3:20** | 9:16, **60–70 s** |
 | Look | Soft flat characters, silent captions, fully built mood-coloured rooms (enhanced "Nobody Is Watching" style) | 3D "Ink & Ember": ink-outlined Blender sets, cel shading, moving camera, word-by-word captions |
 | Voice | Usually none (captions) | Apple Premium/Enhanced voice or your own recording |
-| Example | `studio/out/nobody-is-watching-enhanced.mp4` (`FilmHD`) | `studio/out/checks96/the-96-checks.mp4` (`Checks96`) |
+| Example | `studio/out/01-nobody-is-watching/nobody-is-watching.mp4` (`FilmHD`) | `studio/out/02-the-96-checks/the-96-checks.mp4` (`Checks96`) |
 
 ## How a video gets made: a harness of skills, run in order
 
@@ -39,8 +39,7 @@ The rules behind every step are in [`CLAUDE.md`](CLAUDE.md). The skills are in [
 ```
 CLAUDE.md                 project rules (read by Claude Code every session)
 .claude/skills/           the pipeline skills
-videos/<NN-slug>/brief.md the state of each video (format, length, voice, checklist, notes)
-scripts/                  finished scripts, shot lists, YouTube packaging
+videos/<NN-slug>/         ONE FOLDER PER VIDEO (long or short): brief.md, script.md, youtube.md, thumbnails/
 research/                 style studies: MERGED_STYLE.md, dayonefilms/, ricksclips/
 assets/                   Blender build scripts (characters, sets) -> studio/public/assets/*.glb   (assets/README.md)
 studio/                   Remotion project (studio/README.md)
@@ -52,4 +51,4 @@ studio/                   Remotion project (studio/README.md)
 docs/                     guides and tutorials
 ```
 
-Renders (`studio/out/`), `node_modules` and generated audio stems are not in git. They are rebuilt by the scripts.
+Renders go to `studio/out/<NN-slug>/` (same names as `videos/`): the final `<slug>.mp4`, plus `drafts/`, `stills/` and `versions/`. Use `studio/bin/render.sh <Comp> <NN-slug> draft|still N|final`. Renders, `node_modules` and generated audio stems are not in git. They are rebuilt by the scripts.

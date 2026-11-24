@@ -7,22 +7,17 @@ description: Step 5 of the Faceless Studio pipeline. Render half-resolution draf
 
 ## Loop until the review is clean
 
-1. **Draft:**
+All renders go to `studio/out/<NN>-<slug>/`, the same folder name as `videos/<NN>-<slug>/`. Use the helper (run it from `studio/`).
+
+1. **Draft and mosaic:**
 
    ```bash
-   npx remotion render src/index.ts <Comp> out/<slug>/dev/draftN.mp4 --scale=0.5 --crf=26 --log=error
+   bin/render.sh <Comp> <NN>-<slug> draft
    ```
 
-   About 1 min per minute of video.
-2. **Mosaic and view:** 2 frames per second for shorts, 1 frame every 3 s for long videos.
-
-   ```bash
-   ffmpeg -y -loglevel error -i out/<slug>/dev/draftN.mp4 -vf "fps=2,scale=180:320,tile=14x10" -frames:v 1 out/<slug>/dev/mosN.jpg
-   ```
-
-   Read the image and check every frame against the checklist below.
-3. **Inspect at full resolution:** for any suspicious shot, run `npx remotion still ... --frame=N` and look closely (hands, pencil tip, props, faces).
-4. **Fix and repeat.** Write each problem and its fix into the brief notes.
+   This writes `drafts/draft-<time>.mp4` and `drafts/mosaic-<time>.jpg`: 2 frames per second for 9:16, 1 frame every 3 s for 16:9. It takes about 1 min per minute of video. Read the mosaic and check every frame against the checklist below.
+2. **Inspect at full resolution:** for any suspicious shot, run `bin/render.sh <Comp> <NN>-<slug> still <frame>`. It writes `stills/f<frame>.png`; look closely at hands, pencil tip, props and faces.
+3. **Fix and repeat.** Write each problem and its fix into the brief notes.
 
 ## Checklist (everything the user has flagged before)
 
@@ -41,11 +36,11 @@ description: Step 5 of the Faceless Studio pipeline. Render half-resolution draf
 .venv/bin/python - <<'EOF'
 import subprocess, numpy as np
 W,H=135,240   # use 192,108 for 16:9
-raw=subprocess.run(['ffmpeg','-v','error','-i','out/<slug>/final.mp4','-vf',f'scale={W}:{H}','-f','rawvideo','-pix_fmt','gray','-'],capture_output=True).stdout
+raw=subprocess.run(['ffmpeg','-v','error','-i','out/<NN>-<slug>/<slug>.mp4','-vf',f'scale={W}:{H}','-f','rawvideo','-pix_fmt','gray','-'],capture_output=True).stdout
 f=np.frombuffer(raw,np.uint8).reshape(-1,H,W).astype(np.float32)
 print('black frames',int((f.mean((1,2))<8).sum()),'| mean luma %.0f'%f.mean(),'| frames >2%% clipped',int(((f>245).mean((1,2))>0.02).sum()))
 EOF
-ffmpeg -hide_banner -i out/<slug>/final.mp4 -af ebur128=framelog=quiet -f null - 2>&1 | grep " I:"
+ffmpeg -hide_banner -i out/<NN>-<slug>/<slug>.mp4 -af ebur128=framelog=quiet -f null - 2>&1 | grep " I:"
 ```
 
 Targets:
@@ -63,7 +58,7 @@ df -h /System/Volumes/Data
 Check there is at least 3 GB free, then render:
 
 ```bash
-npx remotion render src/index.ts <Comp> out/<slug>.mp4 --codec=h264 --crf=16
+bin/render.sh <Comp> <NN>-<slug> final
 ```
 
-Use `--crf=18` for long videos. Verify the streams with `ffprobe` and re-run the metrics. Send the MP4 to the user, tick step 5 in the brief, and offer `/package-youtube`.
+This writes `out/<NN>-<slug>/<slug>.mp4`. The previous final moves to `versions/`, and the CRF is chosen automatically: 16 for shorts, 18 for long videos. Verify the streams with `ffprobe` and re-run the metrics. Send the MP4 to the user, tick step 5 in the brief, and offer `/package-youtube`.

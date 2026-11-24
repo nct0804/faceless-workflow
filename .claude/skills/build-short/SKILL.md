@@ -36,7 +36,7 @@ Keep `timing.ts`. Rewrite `Shots.tsx`, the cut list in `Short.tsx` and the `mood
 Add a test composition (like `Checks96Test`) and render stills of each new set-up:
 
 ```bash
-npx remotion still src/index.ts <Comp> out/<slug>/dev/a.png --frame=N --scale=0.5
+bin/render.sh <Comp> <NN>-<slug> still N        # -> out/<NN>-<slug>/stills/fN.png
 ```
 
 Check:

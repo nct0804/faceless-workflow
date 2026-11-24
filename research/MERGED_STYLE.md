@@ -22,7 +22,7 @@ The research behind it is in `dayonefilms/STYLE_BIBLE.md` and `ricksclips/STYLE_
 
 ## 2. The look, in numbers
 
-Measured on `studio/out/look/` with the same probe as the research (`luma`, `σ`, `p5`/`p95`, `crush` <16, `sat`, `sharp`):
+Measured on `studio/out/_lookdev/` with the same probe as the research (`luma`, `σ`, `p5`/`p95`, `crush` <16, `sat`, `sharp`):
 
 | | Day One | RicksClips | **Ours (target)** | Look test |
 |---|---|---|---|---|

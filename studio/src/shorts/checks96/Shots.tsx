@@ -1,5 +1,5 @@
 /**
- * "The 96 Checks": every shot of the short. Script: scripts/02-the-96-checks/. Cuts come from timing.ts (VO words).
+ * "The 96 Checks": every shot of the short. Script: videos/02-the-96-checks/script.md. Cuts come from timing.ts (VO words).
  * Each shot is a component rendered inside a <Sequence>, so useCurrentFrame() is local to the shot.
  */
 import React from 'react';

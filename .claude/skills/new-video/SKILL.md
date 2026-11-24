@@ -35,10 +35,10 @@ After each step, tick it in the brief, write one line of notes, and tell the use
 | Topic / intention | one sentence: what the viewer should feel or learn |
 | Voiceover | none \| apple:<voice> \| own recording |
 | Code | studio/src/shorts/<slug>/ or studio/src/films/<slug>/ |
-| Final | studio/out/<slug>.mp4 |
+| Renders | studio/out/<NN>-<slug>/ (final <slug>.mp4, drafts/, stills/, versions/) |
 
 ## Steps
-- [ ] 1 Script (scripts/<NN>-<slug>/script.md)
+- [ ] 1 Script (videos/<NN>-<slug>/script.md)
 - [ ] 2 Assets (reuse / new: ...)
 - [ ] 3 Voiceover
 - [ ] 4 Build

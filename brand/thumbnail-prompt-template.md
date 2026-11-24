@@ -65,7 +65,7 @@ realistic human, human skin, fingers, hands with fingers, hair, ears, nose, teet
 
 ## 7. Production rules (what makes it look like *one* channel)
 
-1. **Same Mo, every time.** Upload a clean still of Mo from the film as an **image/character reference** (e.g. `studio/out/review2/s18.png`, his close-up). Keep the CHARACTER block word-for-word. If your tool supports it, lock the seed for a series.
+1. **Same Mo, every time.** Upload a clean still of Mo from the film as an **image/character reference** (e.g. `studio/out/01-nobody-is-watching/stills/review-act2/s18.png`, his close-up). Keep the CHARACTER block word-for-word. If your tool supports it, lock the seed for a series.
 2. **Generate the image WITHOUT text first, then add the text yourself** (Canva / Photoshop / Figma) in the same font every time. AI text often comes out misspelled or with a different font each time. Suggested fonts: *Anton* or *Bebas Neue* (free, Google Fonts), white, all caps, with a 6–10 px dark shadow. Use the `[TEXT]` block only when your model renders text reliably.
 3. **One face, one emotion, one prop, one light, ≤3 words.**
 4. **Amber is the only color that "pops".** No red (it reads as clickbait and clashes with the film).

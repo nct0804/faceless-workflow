@@ -2,7 +2,7 @@
 
 Worked example: **"Nobody Is Watching."** (3:20, 57 shots, silent captions).
 
-- Script: `scripts/Nobody-is-watching/01-nobody-is-watching.md`
+- Folder: `videos/01-nobody-is-watching/` (brief, script, YouTube packaging, thumbnails)
 - Plan: `studio/src/films/nobody-is-watching/plan.ts`
 - Render: `FilmHD`
 
@@ -64,7 +64,7 @@ Each shot is a small file. The room, window light and grade come from the plan, 
 - Fix, then render the final:
 
 ```bash
-npx remotion render src/index.ts <FilmComp> out/<slug>.mp4 --codec=h264 --crf=18
+bin/render.sh <FilmComp> <NN>-<slug> final
 ```
 
 ## 6. Package: `/package-youtube`

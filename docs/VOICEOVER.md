@@ -23,7 +23,7 @@ Captions carry the story: Patrick Hand captions in long videos, word chunks in s
 
 ## 3. Record your own voice
 
-1. Open `scripts/<NN-slug>/script.md` and read the **spoken lines** in order.
+1. Open `videos/<NN-slug>/script.md` and read the **spoken lines** in order.
 2. **Leave about half a second of silence between lines.** The importer finds the lines by your pauses. Keep pauses inside a line short.
 3. Use a quiet room and keep the mic about 15 cm away. A phone voice memo (M4A) is fine.
 4. Import it:

@@ -1,6 +1,6 @@
 /**
  * THE 96 CHECKS: a 9:16 short in the "Ink & Ember" style (research/MERGED_STYLE.md).
- *   npx remotion render src/index.ts Checks96 out/checks96/the-96-checks.mp4 --codec=h264 --crf=16
+ *   bin/render.sh Checks96 02-the-96-checks final
  * Every cut is anchored to a word of the voice-over (timing.ts), so a new VO re-times the edit.
  * The colour script (kit3d/mood.tsx) grades every shot continuously across the cuts.
  */

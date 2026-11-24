@@ -2,7 +2,7 @@
 
 Worked example: **"The 96 Checks"** (69 s).
 
-- Script: `scripts/02-the-96-checks/`
+- Folder: `videos/02-the-96-checks/` (brief, script)
 - Code: `studio/src/shorts/checks96/`
 - Render: `Checks96`
 
@@ -59,7 +59,7 @@ cp -R studio/src/shorts/checks96 studio/src/shorts/<slug>
 - Final render:
 
 ```bash
-npx remotion render src/index.ts <Comp> out/<slug>.mp4 --codec=h264 --crf=16
+bin/render.sh <Comp> <NN>-<slug> final
 ```
 
 ## 6. Package: `/package-youtube`

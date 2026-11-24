@@ -1,6 +1,6 @@
 # 01: Nobody Is Watching. · YouTube packaging
 
-Video file: `studio/out/nobody-is-watching.mp4` (3:20, 1080p30, −14 LUFS)
+Video file: `studio/out/01-nobody-is-watching/nobody-is-watching.mp4` (3:20, 1080p30, −14 LUFS)
 
 ---
 

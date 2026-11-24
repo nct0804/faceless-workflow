@@ -7,12 +7,13 @@ Remotion 4.0.546 + @remotion/three (three.js 0.187, @react-three/fiber 9). Every
 ```bash
 npm install
 npm run studio                       # live preview in the browser
-npx remotion render src/index.ts Film out/nobody-is-watching.mp4 --codec=h264 --crf=18   # all 57 shots, 3:20 (~3 min to render)
-npx remotion render src/index.ts Act3 out/act3.mp4 --codec=h264 --crf=18          # shots 31–57, 107.5 s
-npx remotion render src/index.ts Act1 out/act1.mp4 --codec=h264 --crf=18          # shots 1–10, 30 s
-npx remotion render src/index.ts Act2 out/act2.mp4 --codec=h264 --crf=18          # shots 11–30, 62.5 s
-npx remotion render src/index.ts Acts1-2 out/acts1-2.mp4 --codec=h264 --crf=18    # 0:00–1:32.5 (~70 s to render)
-npx remotion still src/index.ts Shot10 out/shot10.png --frame=110
+bin/render.sh FilmHD 01-nobody-is-watching final      # the enhanced long film -> out/01-nobody-is-watching/nobody-is-watching.mp4
+npx remotion render src/index.ts Film out/01-nobody-is-watching/versions/film-v1.mp4 --codec=h264 --crf=18   # original dark v1, all 57 shots
+npx remotion render src/index.ts Act3 out/01-nobody-is-watching/drafts/act3.mp4 --codec=h264 --crf=18          # shots 31–57, 107.5 s
+npx remotion render src/index.ts Act1 out/01-nobody-is-watching/drafts/act1.mp4 --codec=h264 --crf=18          # shots 1–10, 30 s
+npx remotion render src/index.ts Act2 out/01-nobody-is-watching/drafts/act2.mp4 --codec=h264 --crf=18          # shots 11–30, 62.5 s
+npx remotion render src/index.ts Acts1-2 out/01-nobody-is-watching/drafts/acts1-2.mp4 --codec=h264 --crf=18    # 0:00–1:32.5 (~70 s to render)
+bin/render.sh Shot10 01-nobody-is-watching still 110
 ```
 
 ## Audio
@@ -38,7 +39,7 @@ python3 -m venv .venv && .venv/bin/pip install numpy   # once
 - `src/kit/props.tsx`: `Phone`, `PhoneOnDesk`, `PovHands`, `WoodSurface`, `OpenSketchbook`, `DrawingHand`, `Fridge`, `Counter`, `LunchTable`, `Tray`, `TexturePlane`.
 - `src/kit/sets.tsx`: `Room`, `Window`, `Desk`, `Sketchbook`, `DeskLamp`, `PendantLamp`, `Chalkboard`, `FloorShadow`.
 - `src/kit/overlay.tsx`: `PostFX` (vignette, grain, amber anxiety grade), `Caption` (narrator / crowd / dialogue voices, Patrick Hand), `Hud` (LIKES / DRAWINGS).
-- `src/shots/ShotNN.tsx`: one file per script shot (`../scripts/01-nobody-is-watching.md`), and `Root.tsx` sequences them with hard cuts.
+- `src/shots/ShotNN.tsx`: one file per script shot (`../videos/01-nobody-is-watching/script.md`), and `Root.tsx` sequences them with hard cuts.
 
 ## Layering (z) rules
 
@@ -72,7 +73,7 @@ Style spec: `../research/MERGED_STYLE.md`. Assets come from Blender build script
 Look-dev compositions: `CharTest`, `LookTest-9x16`, `LookTest-16x9`.
 
 ```bash
-npx remotion still LookTest-9x16 out/look/a.png --frame=40
+npx remotion still LookTest-9x16 out/_lookdev/a.png --frame=40
 ```
 
 ### kit3d additions (v2 shorts)
@@ -91,7 +92,7 @@ npx remotion still LookTest-9x16 out/look/a.png --frame=40
 ```bash
 python3 audio/vo/make_vo.py src/shorts/checks96                 # scratch VO (local Apple speech) + word timings
 .venv/bin/python audio/make_short_audio.py checks96             # score + SFX + duck + -14 LUFS -> public/audio/checks96/mix.wav
-npx remotion render src/index.ts Checks96 out/checks96/the-96-checks.mp4 --codec=h264 --crf=16   # ~4 min
+bin/render.sh Checks96 02-the-96-checks final        # ~2 min -> out/02-the-96-checks/the-96-checks.mp4
 ```
 
 New short: copy `src/shorts/checks96/`, rewrite `lines.json`, run the two scripts, then rewrite `Shots.tsx` and the cut list (reuse the sets, envs and props; build a Blender set only for a new place). `Checks96Test` renders look-dev stills (`--frame=N`).
@@ -106,7 +107,7 @@ New short: copy `src/shorts/checks96/`, rewrite `lines.json`, run the two script
 | Colour script | `kit/film.tsx`: `FILM_PLAN` shot -> [place, mood], moods blend across cuts | `kit3d/mood.tsx`: `<MoodScript>` keyframes on VO words; `Stage` grades every shot |
 
 ```bash
-npx remotion render src/index.ts FilmHD out/nobody-is-watching-enhanced.mp4 --codec=h264 --crf=18   # ~4 min
+bin/render.sh FilmHD 01-nobody-is-watching final     # ~3 min
 ```
 
 - **Holding things (3D):** `<Character reach={{L, R}}>` = two-bone IK; `gripPoints(phoneAt, phoneRot)` for phones, `drawGrip(book, rot, uv)` + `<PencilBetween>` for drawing (the tip rides `strokeTip`, so the page shows exactly what the pencil drew). POV inserts: `<PovArm>` + `cam.near`.

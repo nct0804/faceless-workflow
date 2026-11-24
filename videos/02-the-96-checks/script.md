@@ -2,7 +2,7 @@
 
 The first short in the merged **Ink & Ember** style (`research/MERGED_STYLE.md`). It follows the RicksClips beat sheet and ends with our two-line reversal.
 
-- **Render:** `studio/out/checks96/the-96-checks.mp4`
+- **Render:** `studio/out/02-the-96-checks/the-96-checks.mp4`
 - **Code:** `studio/src/shorts/checks96/`
   - VO lines: `lines.json`
   - Word timings: `vo.json`

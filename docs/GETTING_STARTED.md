@@ -54,13 +54,13 @@ npm run studio
 `npm run studio` opens the Remotion studio in the browser. Pick `FilmHD` (long) or `Checks96` (short).
 
 ```bash
-npx remotion render src/index.ts Checks96 out/checks96.mp4 --codec=h264 --crf=16
+bin/render.sh Checks96 02-the-96-checks final
 ```
 
 This renders the short (~2 min).
 
 ```bash
-npx remotion render src/index.ts FilmHD out/film.mp4 --codec=h264 --crf=18
+bin/render.sh FilmHD 01-nobody-is-watching final
 ```
 
 This renders the long film (~3 min).

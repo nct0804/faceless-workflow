@@ -7,7 +7,7 @@ description: Step 2 of the Faceless Studio pipeline. Map every place, character 
 
 ## 1. Inventory what the script needs
 
-Read `scripts/<NN>-<slug>/script.md`. List every **place**, **character** and **prop or screen**.
+Read `videos/<NN>-<slug>/script.md`. List every **place**, **character** and **prop or screen**.
 
 ## 2. Map it to the library
 

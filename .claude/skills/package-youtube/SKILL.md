@@ -5,7 +5,7 @@ description: Step 6 (optional) of the Faceless Studio pipeline. Write the YouTub
 
 # /package-youtube: title, description, thumbnail (step 6, optional)
 
-Model: `scripts/Nobody-is-watching/01-nobody-is-watching-youtube.md` and its thumbnail.
+Model: `videos/01-nobody-is-watching/youtube.md` and `thumbnails/`.
 
 ## Titles: 5 options
 
@@ -28,4 +28,4 @@ Model: `scripts/Nobody-is-watching/01-nobody-is-watching-youtube.md` and its thu
 2. Use the face in close-up, one prop, high contrast, the mood colour, and 2–4 words in Baloo 2 ExtraBold with the amber key word.
 3. Check it at 160 px wide: it must still read.
 
-Write `scripts/<NN>-<slug>/youtube.md`, put the thumbnail in `scripts/<NN>-<slug>/`, and tick step 6 in the brief.
+Write `videos/<NN>-<slug>/youtube.md`, put the thumbnails in `videos/<NN>-<slug>/thumbnails/`, and tick step 6 in the brief.

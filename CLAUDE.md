@@ -58,8 +58,10 @@ Every video goes through these skills, one at a time. Don't skip ahead. Each ste
 
 ## Where things are
 
-- `videos/<slug>/brief.md`: the state of each video (format, length, voice, step checklist). `/new-video` reads it.
-- `scripts/`: scripts and shot lists of finished videos.
+- `videos/<NN-slug>/`: **one folder per video, long or short.**
+  - `brief.md`: the state of the video (format, length, voice, step checklist). `/new-video` reads it.
+  - `script.md`, `youtube.md`, `thumbnails/`.
+- `studio/out/<NN-slug>/`: that video's renders (git-ignored), same folder name: `<slug>.mp4` (final), `drafts/`, `stills/`, `versions/`. **Always render with `studio/bin/render.sh <Comp> <NN-slug> draft | still <frame> | final`**, never to the top of `out/`. Kit tests that aren't tied to a video go in `out/_lookdev/`.
 - `research/`: style studies (`MERGED_STYLE.md`, `dayonefilms/`, `ricksclips/`). The full third-party transcripts stay local (git-ignored), because the repo is public.
 - `assets/`: Blender build scripts. See `assets/README.md`; build headless with `/Applications/Blender.app/Contents/MacOS/Blender -b --factory-startup -P <script>`.
 - `studio/`: the Remotion project. See `studio/README.md`.
@@ -71,4 +73,4 @@ Every video goes through these skills, one at a time. Don't skip ahead. Each ste
 
 ## Environment
 
-macOS, Node and npm, Python 3 (`studio/.venv` has numpy), ffmpeg, Blender 5.3 at `/Applications/Blender.app`. Renders go to `studio/out/` (git-ignored). Check `df -h` before long renders: the disk has been nearly full before.
+macOS, Node and npm, Python 3 (`studio/.venv` has numpy), ffmpeg, Blender 5.3 at `/Applications/Blender.app`. Renders go to `studio/out/<NN-slug>/` (git-ignored). Check `df -h` before long renders: the disk has been nearly full before.
