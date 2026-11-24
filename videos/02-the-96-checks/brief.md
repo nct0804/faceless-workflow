@@ -3,6 +3,7 @@
 | | |
 |---|---|
 | Format | short (9:16) |
+| Type | edutainment (entertainment + learning, RicksClips style) |
 | Target length | 60–70 s (final 69.1 s) |
 | Topic / intention | The spotlight effect: everyone you perform for is busy watching their own crowd |
 | Voiceover | ElevenLabs "Emmett – sharp narrator" (eleven_v4, one take, 2,812 credits), tempo 1.07 |

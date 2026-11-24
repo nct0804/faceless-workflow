@@ -11,6 +11,21 @@ description: Step 1 of the Faceless Studio pipeline. Agree the format (short or 
 
 Ask: **"Short (9:16, 60–70 s, narrated RicksClips pace) or Long (16:9, the 'Nobody Is Watching' flat style, silent captions)?"**
 
+## A2. Ask the video type (it sets the energy and pace)
+
+Ask: **"What type of video is it?"**
+- **Edutainment** (entertainment plus learning, the RicksClips style; our most recent and current main style)
+- **Motivation**
+- **Entertainment** (comedy or story)
+- **Science**
+- **Art**
+- **Animal**
+- anything else
+
+Load that type's profile from `docs/VIDEO_TYPES.md`: voice pace, cut rhythm, camera, music, sound effects, colour bias, captions and script shape. Use it for everything below. The **materials stay the same** (Mo, the sets, the kits); only the energy changes.
+
+If the type is ⏳ (no studied reference yet), **remind the user**: *"I don't have reference examples for <type> yet. Want to share a few before we lock the style?"* If they want to go ahead anyway, use the draft profile and note in the brief that it's a draft.
+
 ## B. Ask the length
 
 - If the user gives none, use the **default**: short **65 s**, long **3:20**.
@@ -71,7 +86,7 @@ Deliverable: `videos/<NN>-<slug>/script.md` with the shot table and captions.
 ## E. Confirm
 
 Show the user:
-- the format, length and intention
+- the format, **type** (and its energy in one line), length and intention
 - the beat summary
 - the full script
 

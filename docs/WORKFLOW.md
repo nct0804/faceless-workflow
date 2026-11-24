@@ -20,6 +20,7 @@ Every video runs the same sequence. Each step is a **skill**: type it in Claude 
 - **"Short or Long?"**
   - Short: 9:16, narrated, fast.
   - Long: 16:9, silent captions, cinematic.
+- **"What type of video?"** Edutainment (the RicksClips mix of entertainment and learning), motivation, entertainment, science, art, animal, ... The type sets the energy and pace; the materials stay the same. See [VIDEO_TYPES.md](VIDEO_TYPES.md).
 - **"How long?"** With no answer, the defaults apply: short 65 s, long 3:20. Say "whatever fits the script" and you'll get a recommendation with the reason.
 - **"Do you have an idea or a script?"**
   - **Yes:** paste it. Claude restates your intention, structures it into the format's beat sheet, and suggests edits without overwriting you.

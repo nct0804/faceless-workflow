@@ -20,6 +20,10 @@ Every video goes through these skills, one at a time. Don't skip ahead. Each ste
 ### Rules the user set (2026-11-24)
 
 1. **Ask the format first:** Short or Long. Never assume.
+1b. **Ask the video type:** edutainment (the RicksClips style of entertainment plus learning; the current main style), motivation, entertainment, science, art, animal, or another.
+   - The type sets the energy and pace: voice rate, cuts, camera, music, sound effects, colour bias and script shape. Use the profile in `docs/VIDEO_TYPES.md`.
+   - The materials stay the same.
+   - If the type has no studied reference yet (⏳), remind the user to share example videos.
 2. **Ask the length.** If the user gives none, use the default. If the user wants it to follow the script, estimate it from the script and recommend a length.
    - **Short:** 9:16, **60–70 s** (default 65 s), the RicksClips pace.
    - **Long:** 16:9, the "Nobody Is Watching" flat style, enhanced. Default **3:20** (200 s); a sensible range is 2–5 min.
@@ -40,6 +44,10 @@ Every video goes through these skills, one at a time. Don't skip ahead. Each ste
    - **No:** keep everything, including drafts.
    - Record the answer in the brief's `Published` row. Never delete the renders of an unpublished video.
 9. **Improve as you go.** When the user gives new requirements during a video, update the kit, the skills and this file together.
+
+## Pending from the user (remind them at /new-video until done)
+
+- [ ] **Example videos for the video types** without a studied reference: entertainment, science, art, animal. The user said on 2026-11-24 that they would send examples. When they arrive, study them like RicksClips and update `docs/VIDEO_TYPES.md`.
 
 ## Look and quality rules (learned from feedback; check every render)
 

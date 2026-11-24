@@ -11,6 +11,10 @@ This is the entry point of the pipeline. It never builds anything itself: it fin
 
 Run `python3 studio/bin/renders.py stale`. If any videos are listed, run `/clean-renders` before anything else: ask whether they were posted, clean the posted ones, keep the rest.
 
+## 0b. Reminders for the user
+
+Check the "Pending from the user" list in `CLAUDE.md`. If something is still open (for example reference videos for a type), remind the user in one line.
+
 ## 1. Find the video
 
 - List `videos/*/brief.md`. If one is in progress (unchecked steps), ask: **"Continue <title> (next: <step>) or start a new video?"**
@@ -18,7 +22,7 @@ Run `python3 studio/bin/renders.py stale`. If any videos are listed, run `/clean
 
 ## 2. Run the steps in order (one at a time; confirm with the user between steps)
 
-1. `/write-video-script`: format, length, topic and script. **Nothing else starts before this is confirmed.**
+1. `/write-video-script`: format, **video type** (sets the energy and pace), length, topic and script. **Nothing else starts before this is confirmed.**
 2. `/plan-video-assets`: reuse assets, and request new materials only if the content needs them.
 3. `/record-voiceover`: no voiceover, an Apple Premium/Enhanced voice, or the user's own recording.
 4. `/build-short` or `/build-long`, depending on the format in the brief.
@@ -35,6 +39,7 @@ After each step, tick it in the brief, write one line of notes, and tell the use
 | | |
 |---|---|
 | Format | short (9:16) \| long (16:9) |
+| Type | edutainment \| motivation \| entertainment \| science \| art \| animal \| ... (profile: docs/VIDEO_TYPES.md) |
 | Target length | e.g. 65 s / 3:20 (default: short 65 s, long 3:20) |
 | Topic / intention | one sentence: what the viewer should feel or learn |
 | Voiceover | none \| apple:<voice> \| own recording |

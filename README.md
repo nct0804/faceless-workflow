@@ -15,7 +15,7 @@ Open this folder in **Claude Code** and type `/new-video`. The skills run one af
 
 ```
 /new-video            start or continue a video (tracks state in videos/<slug>/brief.md)
-  1 /write-video-script   Short or Long? How long? Your idea or script, or topic suggestions. Lock the script
+  1 /write-video-script   Short or Long? Which type (edutainment, motivation, ...)? How long? Your idea or script, or topic suggestions. Lock the script
   2 /plan-video-assets    reuse places, characters and props; request new materials only if needed
   3 /record-voiceover     no voiceover | Apple Premium/Enhanced voice | record your own
   4 /build-short  or  /build-long
@@ -34,6 +34,7 @@ The rules behind every step are in [`CLAUDE.md`](CLAUDE.md). The skills are in [
    - [docs/TUTORIAL_LONG.md](docs/TUTORIAL_LONG.md): make a long video
    - [docs/TUTORIAL_SHORT.md](docs/TUTORIAL_SHORT.md): make a short
 4. [docs/VOICEOVER.md](docs/VOICEOVER.md): the three voice options in detail
+5. [docs/VIDEO_TYPES.md](docs/VIDEO_TYPES.md): video types (edutainment, motivation, ...) and the energy and pace each one gets
 
 ## Repository layout
 

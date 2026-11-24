@@ -3,6 +3,7 @@
 | | |
 |---|---|
 | Format | long (16:9) |
+| Type | motivation |
 | Target length | 3:20 (200 s, 57 shots) |
 | Topic / intention | Performing for approval empties you; nobody is watching as closely as you think, so stop performing and start living |
 | Voiceover | none (silent captions) |
