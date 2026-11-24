@@ -42,6 +42,8 @@ export type ToonOpts = {
   skinning?: boolean;
   transparent?: boolean;
   ramp?: number[];
+  /** 0..1: keep the base colour regardless of coloured lights (characters stay crisp white, RicksClips) */
+  selfLit?: number;
 };
 
 /**
@@ -65,6 +67,7 @@ export const toon = (o: ToonOpts) => {
     sh.uniforms.uPattern = {value: pid};
     sh.uniforms.uRim = {value: rim};
     sh.uniforms.uRimK = {value: rimStrength};
+    sh.uniforms.uSelf = {value: o.selfLit ?? 0};
     sh.vertexShader = sh.vertexShader
       .replace('#include <common>', '#include <common>\nvarying vec3 vWPos;\nvarying vec3 vWNrm;')
       .replace(
@@ -84,6 +87,7 @@ export const toon = (o: ToonOpts) => {
         uniform int uPattern;
         uniform vec3 uRim;
         uniform float uRimK;
+        uniform float uSelf;
         float h1(float n){ return fract(sin(n)*43758.5453); }
         float n2(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.-2.*f);
           return mix(mix(h1(dot(i,vec2(1,57))),h1(dot(i+vec2(1,0),vec2(1,57))),f.x),
@@ -139,10 +143,13 @@ export const toon = (o: ToonOpts) => {
         `vec3 vdir = normalize(cameraPosition - vWPos);
         float fres = pow(1.0 - clamp(dot(normalize(vWNrm), vdir), 0.0, 1.0), 3.0);
         outgoingLight += uRim * smoothstep(0.35, 0.75, fres) * uRimK;
+        // self-lit share: the shading shape stays, the colour cast of the lights doesn't
+        float shadeK = clamp(dot(outgoingLight, vec3(0.333)) / max(dot(diffuseColor.rgb, vec3(0.333)), 1e-3), 0.0, 1.4);
+        outgoingLight = mix(outgoingLight, diffuseColor.rgb * mix(0.7, 0.95, smoothstep(0.35, 0.9, shadeK)), uSelf);
         #include <opaque_fragment>`,
       );
   };
-  m.customProgramCacheKey = () => `toon-${pid}-${!!o.ao}-${!!o.map}-${(o.ramp ?? SET_RAMP).join('')}`;
+  m.customProgramCacheKey = () => `toon-${pid}-${!!o.ao}-${!!o.map}-${(o.ramp ?? SET_RAMP).join('')}-${o.selfLit ? 1 : 0}`;
   return m;
 };
 

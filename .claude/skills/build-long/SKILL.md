@@ -32,6 +32,7 @@ description: Step 4 (long format) of the Faceless Studio pipeline. Build a 16:9 
 ```
 
 - **Push-ins every shot:** `zoom` grows over the shot (for example 1.0 → 1.06). Use a pan for reveals.
+- **Faces carry the emotion:** `<Hero mood=...>` / `<Person mood=...>` accept all 34 presets of the shared face system (`kit3d/face.ts`). Change them on the beats.
 - **Captions:** Patrick Hand. Narrator lines are white, the crowd is amber lowercase, dialogue goes in pills. Each caption is held long enough to read (at least 1 s per 4 words).
 - **The meter:** `<Hud likes drawings>` tells the story in numbers.
 - **Rock bottom:** one held, silent shot (no camera move, no music).

@@ -22,7 +22,7 @@ export const PostFX: React.FC<{amber?: number; vignette?: number; grain?: number
     <AbsoluteFill style={{pointerEvents: 'none'}}>
       {film && (
         // the colour script grade: brightness / saturation on everything below, plus a soft mood tint
-        <AbsoluteFill style={{backdropFilter: `brightness(${film.brightness}) saturate(${film.saturate})`}} />
+        <AbsoluteFill style={{backdropFilter: `brightness(${film.brightness}) saturate(${film.saturate * 1.04}) contrast(1.1)`}} />
       )}
       {film && <AbsoluteFill style={{backgroundColor: film.tint, mixBlendMode: 'soft-light', opacity: film.tintK * 2.5}} />}
       {amber > 0 && (

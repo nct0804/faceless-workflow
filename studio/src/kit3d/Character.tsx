@@ -7,7 +7,7 @@ import React, {useLayoutEffect, useMemo} from 'react';
 import * as THREE from 'three';
 import {instantiate, useGLB} from './assets';
 import {drawFace, type FaceState} from './face';
-import {CHAR_RAMP, toonRamp} from './materials';
+import {CHAR_RAMP, toon} from './materials';
 
 export type Pose = {
   /** arm raise from hanging, degrees (90 = straight out sideways, 160 = up) */
@@ -61,19 +61,23 @@ export type CharacterProps = {
 };
 
 export const Character: React.FC<CharacterProps> = ({
-  id, position = [0, 0, 0], rotation = 0, scale = 1, pose = {}, face = {}, outline = 3.2, recolor, visible = true, reach,
+  id, position = [0, 0, 0], rotation = 0, scale = 1, pose = {}, face = {}, outline = 6, recolor, visible = true, reach,
 }) => {
   const g = useGLB(id);
   const {canvas, tex, faceMat} = useMemo(() => {
     const c = document.createElement('canvas');
-    c.width = c.height = 512;
+    c.width = c.height = 1024; // sharp faces in close-ups
     const t = new THREE.CanvasTexture(c);
     t.colorSpace = THREE.SRGBColorSpace;
     t.anisotropy = 8;
     t.flipY = false; // glTF UV convention
     // lit like the head (cel), so the face sits IN the light instead of glowing on top of it
-    const m = new THREE.MeshToonMaterial({map: t, gradientMap: toonRamp(CHAR_RAMP), transparent: true, depthWrite: false,
-      polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2});
+    // the face is lit like the head (same self-lit share), so it sits IN the head, crisp and white
+    const m = toon({color: '#FFFFFF', pattern: 'plain', map: t, ramp: CHAR_RAMP, transparent: true, selfLit: 0.6, rimStrength: 0});
+    m.depthWrite = false;
+    m.polygonOffset = true;
+    m.polygonOffsetFactor = -2;
+    m.polygonOffsetUnits = -2;
     return {canvas: c, tex: t, faceMat: m};
   }, []);
 

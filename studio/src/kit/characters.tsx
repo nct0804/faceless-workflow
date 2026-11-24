@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {useCurrentFrame} from 'remotion';
 import * as THREE from 'three';
+import {drawFace, type Mood as FaceMood} from '../kit3d/face';
 import {C} from '../theme';
 import {ellipse, Flat, Glow, GLOW_ORDER, roundedRect} from './three';
 
@@ -81,8 +82,28 @@ const S = {
   miniScreen: roundedRect(26, 50, 5),
 };
 
-/** 'fake' = laughing mouth, dead eyes */
-export type Mood = 'neutral' | 'happy' | 'laugh' | 'shock' | 'sad' | 'smirk' | 'tired' | 'fake';
+/** any expression of the shared face system (kit3d/face.ts): 34 presets ('fake' = laughing mouth, dead eyes) */
+export type Mood = FaceMood;
+
+/** the face as a canvas-textured plane over the head (drawn by kit3d/face.ts) */
+const FacePlane: React.FC<{mood: Mood; lookX?: number; lookY?: number; blink?: number; eyeScale?: number; browY?: number}> = (p) => {
+  const {canvas, tex} = useMemo(() => {
+    const c = document.createElement('canvas');
+    c.width = c.height = 512;
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = 8;
+    return {canvas: c, tex: t};
+  }, []);
+  drawFace(canvas.getContext('2d')!, {mood: p.mood, lookX: p.lookX, lookY: p.lookY, blink: p.blink, eyeScale: p.eyeScale, browY: p.browY});
+  tex.needsUpdate = true;
+  return (
+    <mesh position={[0, 2, 0.1]}>
+      <planeGeometry args={[112, 112]} />
+      <meshBasicMaterial map={tex} transparent depthWrite={false} />
+    </mesh>
+  );
+};
 export type Accessory = 'hood' | 'glasses' | 'buns' | 'cap' | 'shades';
 
 export type PersonProps = {
@@ -229,18 +250,8 @@ export const Person: React.FC<PersonProps> = ({
           <Flat shape={S.head} color={color} outline={ink} />
           {!back && (
           <>
-          {/* eyes */}
-          {mood === 'laugh' ? (
-            <>
-              <Flat shape={S.eyeClosedHappy} color={ink} position={[-20 + hx, 6 + hy, 0.1]} />
-              <Flat shape={S.eyeClosedHappy} color={ink} position={[20 + hx, 6 + hy, 0.1]} />
-            </>
-          ) : (
-            <>
-              <Flat shape={S.eye} color={ink} position={[-20 + hx, 8 + hy, 0.1]} scale={[1, eyeY]} />
-              <Flat shape={S.eye} color={ink} position={[20 + hx, 8 + hy, 0.1]} scale={[1, eyeY]} />
-            </>
-          )}
+          {/* face: the shared expression renderer (kit3d/face.ts), same faces as the 3D kit */}
+          <FacePlane mood={mood} lookX={lookX} lookY={lookY} blink={blinking ? 1 : 0} eyeScale={eyeScale} browY={(browLiftProp ?? 0) / 5} />
           {has('shades') && (
             <>
               <Flat shape={S.shades} color="#0E0F13" position={[-21 + hx * 0.8, 8 + hy, 0.16]} />
@@ -255,20 +266,6 @@ export const Person: React.FC<PersonProps> = ({
               <Flat shape={S.bridge} color={ink} position={[hx * 0.8, 10 + hy, 0.15]} />
             </>
           )}
-          {/* brows */}
-          <Flat shape={S.brow} color={ink} position={[-21 + hx, 32 + hy + browLift, 0.1]} rotation={browTilt} />
-          <Flat
-            shape={S.brow}
-            color={ink}
-            position={[21 + hx, 32 + hy + browLift + (mood === 'smirk' ? 5 : 0), 0.1]}
-            rotation={-browTilt + (mood === 'smirk' ? 0.15 : 0)}
-          />
-          {/* mouth */}
-          {mood === 'happy' && <Flat shape={S.mouthHappy} color={ink} position={[hx, -14 + hy, 0.1]} />}
-          {(mood === 'laugh' || mood === 'fake') && <Flat shape={S.mouthLaugh} color={ink} position={[hx, -14 + hy, 0.1]} />}
-          {mood === 'shock' && <Flat shape={S.mouthO} color={ink} position={[hx, -24 + hy, 0.1]} />}
-          {mood === 'sad' && <Flat shape={S.mouthSad} color={ink} position={[hx, -34 + hy, 0.1]} />}
-          {mood === 'smirk' && <Flat shape={S.mouthFlat} color={ink} position={[6 + hx, -24 + hy, 0.1]} rotation={0.25} />}
           </>
           )}
           {has('cap') && (

@@ -59,7 +59,7 @@ export const Flat: React.FC<FlatProps> = ({
   shape,
   color,
   outline,
-  outlineWidth = 3,
+  outlineWidth = 4, // bolder ink (high-contrast finish)
   opacity = 1,
   position = [0, 0, 0],
   rotation = 0,

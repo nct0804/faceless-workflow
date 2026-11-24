@@ -31,21 +31,21 @@ type MoodDef = {
 };
 
 export const MOODS: Record<MoodName, MoodDef> = {
-  bright: {exposure: 1.06, contrast: 1.06, saturation: 1.32, vignette: 0.12, lift: 0.07, split: 0.14, bloom: 0.75,
+  bright: {exposure: 1.06, contrast: 1.14, saturation: 1.32, vignette: 0.12, lift: 0.049, split: 0.14, bloom: 0.75,
     shadowTint: '#3B4E8A', highlightTint: '#FFF1CC', bg: '#9FC8F0', ambient: '#9DB2E6', ambientK: 0.72, key: '#FFE9C4', keyK: 1.0, warm: 0.4},
-  cozy: {exposure: 1.04, contrast: 1.08, saturation: 1.3, vignette: 0.16, lift: 0.06, split: 0.2, bloom: 0.8,
+  cozy: {exposure: 1.04, contrast: 1.16, saturation: 1.3, vignette: 0.16, lift: 0.042, split: 0.2, bloom: 0.8,
     shadowTint: '#4A3566', highlightTint: '#FFD29A', bg: '#E8A86A', ambient: '#A894C8', ambientK: 0.68, key: '#FFD7A0', keyK: 1.0, warm: 0.8},
-  cool: {exposure: 1.0, contrast: 1.1, saturation: 1.05, vignette: 0.2, lift: 0.05, split: 0.2, bloom: 0.8,
+  cool: {exposure: 1.0, contrast: 1.18, saturation: 1.05, vignette: 0.2, lift: 0.035, split: 0.2, bloom: 0.8,
     shadowTint: '#2A3A6E', highlightTint: '#F2E2C8', bg: '#6E86B0', ambient: '#8094C6', ambientK: 0.8, key: '#E8EEFF', keyK: 0.85, warm: 0.6},
-  night: {exposure: 1.02, contrast: 1.14, saturation: 1.12, vignette: 0.26, lift: 0.04, split: 0.22, bloom: 0.9,
+  night: {exposure: 1.02, contrast: 1.22, saturation: 1.12, vignette: 0.26, lift: 0.028, split: 0.22, bloom: 0.9,
     shadowTint: '#1A2348', highlightTint: '#FFC98A', bg: '#141A2E', ambient: '#5468A8', ambientK: 1.0, key: '#8FA6FF', keyK: 1.0, warm: 1.0},
-  grey: {exposure: 0.95, contrast: 1.04, saturation: 0.55, vignette: 0.28, lift: 0.05, split: 0.08, bloom: 0.6,
+  grey: {exposure: 0.95, contrast: 1.12, saturation: 0.55, vignette: 0.28, lift: 0.035, split: 0.08, bloom: 0.6,
     shadowTint: '#2E3444', highlightTint: '#D2D4DC', bg: '#3A4152', ambient: '#7A8296', ambientK: 0.85, key: '#C8CEDC', keyK: 0.8, warm: 0.3},
-  anxious: {exposure: 0.98, contrast: 1.22, saturation: 1.0, vignette: 0.36, lift: 0.03, split: 0.26, bloom: 0.95,
+  anxious: {exposure: 0.98, contrast: 1.30, saturation: 1.0, vignette: 0.36, lift: 0.021, split: 0.26, bloom: 0.95,
     shadowTint: '#121A3E', highlightTint: '#FFE0B0', bg: '#10162A', ambient: '#4A5C9A', ambientK: 0.85, key: '#9DB2FF', keyK: 1.0, warm: 1.0},
-  bottom: {exposure: 0.86, contrast: 1.08, saturation: 0.45, vignette: 0.46, lift: 0.03, split: 0.1, bloom: 0.7,
+  bottom: {exposure: 0.86, contrast: 1.16, saturation: 0.45, vignette: 0.46, lift: 0.021, split: 0.1, bloom: 0.7,
     shadowTint: '#151A2A', highlightTint: '#C9CCD6', bg: '#0C1020', ambient: '#3E4A72', ambientK: 0.8, key: '#8090C0', keyK: 0.6, warm: 0.5},
-  dawn: {exposure: 1.04, contrast: 1.08, saturation: 1.35, vignette: 0.16, lift: 0.07, split: 0.24, bloom: 0.9,
+  dawn: {exposure: 1.04, contrast: 1.16, saturation: 1.35, vignette: 0.16, lift: 0.049, split: 0.24, bloom: 0.9,
     shadowTint: '#4E3A78', highlightTint: '#FFC08A', bg: '#F0A889', ambient: '#B99AD0', ambientK: 0.75, key: '#FFC48A', keyK: 1.0, warm: 0.6},
 };
 

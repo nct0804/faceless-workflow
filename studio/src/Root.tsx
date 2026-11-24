@@ -3,6 +3,8 @@ import {Audio, Composition, Series, staticFile} from 'remotion';
 import {FPS, H, W} from './theme';
 import {LookTest, LOOKTEST_FRAMES} from './looks/LookTest';
 import {CharTest} from './looks/CharTest';
+import {DesignBoard} from './looks/DesignBoard';
+import {FaceSheet} from './looks/FaceSheet';
 import {Checks96Test, TEST_FRAMES} from './shorts/checks96/Test';
 import {Checks96, CHECKS96_FRAMES} from './shorts/checks96/Short';
 import {FilmShot, filmScript} from './kit/film';
@@ -190,6 +192,8 @@ export const Root: React.FC = () => (
     <Composition id="Act2" component={Act2} durationInFrames={total(ACT2)} fps={FPS} width={W} height={H} />
     <Composition id="Acts1-2" component={Acts12} durationInFrames={total(ACT1) + total(ACT2)} fps={FPS} width={W} height={H} />
     <Composition id="Act3" component={Act3} durationInFrames={total(ACT3)} fps={FPS} width={W} height={H} />
+    <Composition id="FaceSheet" component={FaceSheet} durationInFrames={1} fps={FPS} width={1920} height={1080} />
+    <Composition id="DesignBoard" component={DesignBoard} durationInFrames={1} fps={FPS} width={1920} height={1080} defaultProps={{option: 'A' as const}} />
     <Composition id="CharTest" component={CharTest} durationInFrames={30} fps={FPS} width={W} height={H} />
     <Composition id="LookTest-9x16" component={LookTest} durationInFrames={LOOKTEST_FRAMES} fps={FPS} width={1080} height={1920} />
     <Composition id="Checks96" component={Checks96} durationInFrames={CHECKS96_FRAMES} fps={FPS} width={1080} height={1920} />

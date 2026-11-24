@@ -51,6 +51,23 @@ Every video goes through these skills, one at a time. Don't skip ahead. Each ste
 
 ## Look and quality rules (learned from feedback; check every render)
 
+- **Characters stay simple (RicksClips); the FACES act** (user, 2026-11-24). One shared renderer, `studio/src/kit3d/face.ts`, is used by both kits. It has 34 presets:
+  - deadpan, smug, smirk, side-eye, unimpressed, bored, suspicious, thinking
+  - happy, grin, laugh, proud, excited, love, content, relieved
+  - shock, panic, scared, worried, nervous, embarrassed, confused, dizzy
+  - sad, cry, sob, tired, gloom
+  - angry, furious, determined, focused, disgusted
+
+  Parts (eyes, lid, independent brows, 12 mouths, sweat, blush, tears, vein, gloom) can be set per shot.
+  - Change the expression on the beat, every 0.3–0.6 s.
+  - Use asymmetry (one brow up, smirk to one side) and side-glances for humour.
+  - Use the mouth flap (`talk`) when a character speaks.
+  - Review the sheet with `npx remotion still src/index.ts FaceSheet out/_lookdev/faces.png`.
+- **High-contrast finish:**
+  - clean white self-lit heads, bold ink outlines (6 px in 3D, 4 px flat)
+  - more contrast and deeper blacks in both grades
+  - only real lights bloom (`bloomThreshold` 1.0)
+
 - **Characters really hold things.**
   - 3D: `<Character reach={gripPoints(...)}>`.
   - Drawing: `drawGrip` plus `<PencilBetween>`, with the pencil tip on the stroke.

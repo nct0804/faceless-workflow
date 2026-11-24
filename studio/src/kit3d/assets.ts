@@ -83,7 +83,12 @@ export type StyleOpts = {
 export const styleMaterial = (m: THREE.Material, ao: boolean, skinned: boolean, o: StyleOpts) => {
   const name = m.name;
   const std = m as THREE.MeshStandardMaterial;
-  const base = o.recolor?.[name] ?? '#' + (std.color ? std.color.getHexString(THREE.SRGBColorSpace) : 'ffffff');
+  let base = o.recolor?.[name] ?? '#' + (std.color ? std.color.getHexString(THREE.SRGBColorSpace) : 'ffffff');
+  // character skin reads as a clean white head (RicksClips): lighten light skins halfway to white
+  if (skinned && name.startsWith('TOON_skin') && !o.recolor?.[name]) {
+    const c = new THREE.Color(base);
+    if (c.getHSL({h: 0, s: 0, l: 0}).l > 0.5) base = '#' + c.lerp(new THREE.Color('#FFFFFF'), 0.5).getHexString();
+  }
   const key = `${name}|${ao}|${skinned}|${base}|${o.rim}|${o.rimStrength}`;
   if (name === 'FACE' && o.faceMaterial) return o.faceMaterial;
   if (matCache.has(key)) return matCache.get(key)!;
@@ -96,7 +101,7 @@ export const styleMaterial = (m: THREE.Material, ao: boolean, skinned: boolean, 
   } else {
     const pattern = name.startsWith('TOON_') ? name.split('_')[1] : 'plain';
     out = skinned
-      ? toon({color: base, pattern: 'plain', ao: false, rim: o.rim, rimStrength: o.rimStrength ?? 0.28, ramp: CHAR_RAMP})
+      ? toon({color: base, pattern: 'plain', ao: false, rim: o.rim, rimStrength: o.rimStrength ?? 0.22, ramp: CHAR_RAMP, selfLit: name.startsWith('TOON_skin') ? 0.6 : 0.3})
       : toon({color: base, pattern, ao, rim: o.rim, rimStrength: o.rimStrength});
   }
   matCache.set(key, out);
