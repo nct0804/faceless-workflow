@@ -58,6 +58,21 @@ The final render happens only when the draft is clean, and you get the MP4.
 
 Titles, a description and a thumbnail made from the video's own frames.
 
+## Housekeeping: `/clean-renders`
+
+At the start of every `/new-video` (and whenever you ask), Claude checks `studio/out/` for videos whose renders are more than **14 days old** and asks whether each one has been **uploaded or posted** (YouTube, TikTok, Instagram, ...).
+
+- **Posted:** that video's renders (final, drafts, stills, versions) are moved to the macOS Trash. The script and code stay, so it can be re-rendered any time.
+- **Not posted:** everything is kept, including drafts. You'll be asked again after another 14 days.
+
+The answer is saved in the brief (`Published` row). You can also run it by hand:
+
+```bash
+python3 studio/bin/renders.py status
+```
+
+This lists every video's renders with their size, age and published state.
+
 ## Changing the rules
 
 Tell Claude a new requirement at any time, for example "characters should blink more" or "long videos need a narrator". It goes into the video's brief **and** into `CLAUDE.md` or the relevant skill, so every later video follows it.

@@ -21,6 +21,7 @@ Open this folder in **Claude Code** and type `/new-video`. The skills run one af
   4 /build-short  or  /build-long
   5 /review-and-render    draft, frame-by-frame review, fixes, final MP4
   6 /package-youtube      titles, description, thumbnail (optional)
+  ↺ /clean-renders        renders >14 days old: posted? yes -> move renders to Trash, no -> keep all (drafts too)
 ```
 
 The rules behind every step are in [`CLAUDE.md`](CLAUDE.md). The skills are in [`.claude/skills/`](.claude/skills).

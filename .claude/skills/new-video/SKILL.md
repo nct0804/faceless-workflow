@@ -7,6 +7,10 @@ description: Start a new Faceless Studio video or continue one in progress. Use 
 
 This is the entry point of the pipeline. It never builds anything itself: it finds out where a video stands and runs **the next skill in order**.
 
+## 0. Housekeeping first (silent if there's nothing to do)
+
+Run `python3 studio/bin/renders.py stale`. If any videos are listed, run `/clean-renders` before anything else: ask whether they were posted, clean the posted ones, keep the rest.
+
 ## 1. Find the video
 
 - List `videos/*/brief.md`. If one is in progress (unchecked steps), ask: **"Continue <title> (next: <step>) or start a new video?"**
@@ -36,6 +40,7 @@ After each step, tick it in the brief, write one line of notes, and tell the use
 | Voiceover | none \| apple:<voice> \| own recording |
 | Code | studio/src/shorts/<slug>/ or studio/src/films/<slug>/ |
 | Renders | studio/out/<NN>-<slug>/ (final <slug>.mp4, drafts/, stills/, versions/) |
+| Published | no \| yes: <where> (<date>), set by /clean-renders |
 
 ## Steps
 - [ ] 1 Script (videos/<NN>-<slug>/script.md)

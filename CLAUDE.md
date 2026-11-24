@@ -15,6 +15,7 @@ Every video goes through these skills, one at a time. Don't skip ahead. Each ste
 | 4 | `/build-short` or `/build-long` | The shots and the edit |
 | 5 | `/review-and-render` | Draft renders, a frame-by-frame review, fixes and the final MP4 |
 | 6 | `/package-youtube` | Title, description and thumbnail (optional) |
+| ↺ | `/clean-renders` | Housekeeping. `/new-video` runs it first: renders older than 14 days → ask whether the video was posted; **posted → move its renders to the Trash, not posted → keep everything, drafts too** |
 
 ### Rules the user set (2026-11-24)
 
@@ -33,7 +34,12 @@ Every video goes through these skills, one at a time. Don't skip ahead. Each ste
 5. **New materials (sets, props, characters) only when the content needs them.** Reuse the asset library first. Ask before building new assets, and say what each new asset is for.
 6. **Long videos keep the first film's style:** soft flat characters, silent caption storytelling, fully built backdrops, and a mood colour script.
 7. **Spend carefully.** Paid services (for example ElevenLabs, if the user turns it on) are used only with the user's OK. Price the job first (estimate), make one take, and reuse it.
-8. **Improve as you go.** When the user gives new requirements during a video, update the kit, the skills and this file together.
+8. **Keep `studio/out/` clean.**
+   - Renders older than 14 days: ask the user whether that video was uploaded or posted on social media.
+   - **Yes:** move its renders to the Trash (`python3 studio/bin/renders.py clean <NN-slug>`). The source stays, so it can be re-rendered.
+   - **No:** keep everything, including drafts.
+   - Record the answer in the brief's `Published` row. Never delete the renders of an unpublished video.
+9. **Improve as you go.** When the user gives new requirements during a video, update the kit, the skills and this file together.
 
 ## Look and quality rules (learned from feedback; check every render)
 

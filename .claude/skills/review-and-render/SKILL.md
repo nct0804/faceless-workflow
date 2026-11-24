@@ -61,4 +61,4 @@ Check there is at least 3 GB free, then render:
 bin/render.sh <Comp> <NN>-<slug> final
 ```
 
-This writes `out/<NN>-<slug>/<slug>.mp4`. The previous final moves to `versions/`, and the CRF is chosen automatically: 16 for shorts, 18 for long videos. Verify the streams with `ffprobe` and re-run the metrics. Send the MP4 to the user, tick step 5 in the brief, and offer `/package-youtube`.
+This writes `out/<NN>-<slug>/<slug>.mp4`. The previous final moves to `versions/`, and the CRF is chosen automatically: 16 for shorts, 18 for long videos. Verify the streams with `ffprobe` and re-run the metrics. Send the MP4 to the user, tick step 5 in the brief, and offer `/package-youtube`. Keep all drafts until the video is posted: `/clean-renders` removes a video's renders only after the user confirms it was published.

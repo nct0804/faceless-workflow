@@ -8,6 +8,7 @@
 | Voiceover | ElevenLabs "Emmett – sharp narrator" (eleven_v4, one take, 2,812 credits), tempo 1.07 |
 | Code | studio/src/shorts/checks96/, composition `Checks96` |
 | Renders | studio/out/02-the-96-checks/ (final the-96-checks.mp4) |
+| Published | not asked yet |
 
 ## Steps
 - [x] 1 Script (script.md)

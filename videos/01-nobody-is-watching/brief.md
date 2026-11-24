@@ -8,6 +8,7 @@
 | Voiceover | none (silent captions) |
 | Code | studio/src/shots/ (shots), studio/src/films/nobody-is-watching/plan.ts (places + moods), composition `FilmHD` |
 | Renders | studio/out/01-nobody-is-watching/ (final nobody-is-watching.mp4; versions/ has the dark v1) |
+| Published | not asked yet |
 
 ## Steps
 - [x] 1 Script (script.md)
